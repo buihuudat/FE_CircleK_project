@@ -1,0 +1,63 @@
+import { Box, Button, Typography } from "@mui/material";
+import React from "react";
+import ShareIcon from "@mui/icons-material/Share";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+const UuDaiDacBiet = () => {
+  return (
+    <Box>
+      <Typography>ƯU ĐÃI ĐẶC BIỆT</Typography>
+      <Typography>
+        Circle K luôn mang đến cho bạn những chương trình ưu đãi mới, đặc biệt,
+        hấp dẫn và thú vị, từ các Chương Trình Khuyến Mãi Tháng, Giá Rẻ Mỗi Ngày
+        đến các combo ăn uống mà bạn không thể bỏ qua.
+      </Typography>
+
+      <Box pl={40} pr={40} sx={{ outline: "1px solid #333" }}>
+        <img
+          src="https://www.circlek.com.vn/wp-content/uploads/2022/02/960x300-6.png"
+          alt=""
+          style={{ width: "100%", height: "100%" }}
+        />
+        <Box p={4} display={"flex"} flexDirection="column" gap={2}>
+          <Box display={"flex"} flexDirection="row" gap={2}>
+            <Button color="primary" variant="contained">
+              <ThumbUpAltIcon />
+              <Typography>Thích</Typography>
+            </Button>
+            <Button color="primary" variant="contained">
+              <ShareIcon />
+              <Typography>Chia sẻ</Typography>
+            </Button>
+          </Box>
+          <Box
+            display={"flex"}
+            flexDirection="row"
+            justifyContent={"space-between"}
+            alignItems="center"
+          >
+            <Box>
+              <Typography color="error" fontWeight={600} variant={"h6"}>
+                KHUYẾN MÃI ĐẶC BIỆT THÁNG 11/2022
+              </Typography>
+              <Typography>Có hiệu lực từ 03.11.2022 đến 30.11.2022</Typography>
+            </Box>
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ boderRadius: "10px" }}
+            >
+              XEM TẤT CẢ
+            </Button>
+          </Box>
+          <Typography>
+            Đến Circle K - chuỗi cửa hàng tiện lợi mở cửa 24/7 để trải nghiệm
+            phong cách mua sắm tiện lợi, nhanh chóng với những ưu đãi hấp dẫn
+            không thể bỏ lỡ!
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export default UuDaiDacBiet;
