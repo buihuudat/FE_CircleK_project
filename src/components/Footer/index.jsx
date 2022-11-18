@@ -118,7 +118,12 @@ const Footer = () => {
           >
             <img
               src="https://www.circlek.com.vn/wp-content/themes/circlek/images/img/logo-go-footer.png"
-              alt=""
+              alt="logo"
+              style={{
+                width: "200px",
+                height: "auto",
+                objectFit: "cover",
+              }}
             />
             {titleFooter.map((e, i) => (
               <Typography

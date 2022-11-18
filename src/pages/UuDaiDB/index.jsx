@@ -5,14 +5,22 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 const UuDaiDacBiet = () => {
   return (
     <Box>
-      <Typography>ƯU ĐÃI ĐẶC BIỆT</Typography>
-      <Typography>
+      <Typography
+        align="center"
+        variant="h4"
+        fontWeight={600}
+        color="red"
+        pt={1}
+      >
+        ƯU ĐÃI ĐẶC BIỆT
+      </Typography>
+      <Typography align="center" width="600px" p={3} sx={{ m: "0 auto" }}>
         Circle K luôn mang đến cho bạn những chương trình ưu đãi mới, đặc biệt,
         hấp dẫn và thú vị, từ các Chương Trình Khuyến Mãi Tháng, Giá Rẻ Mỗi Ngày
         đến các combo ăn uống mà bạn không thể bỏ qua.
       </Typography>
 
-      <Box pl={40} pr={40} sx={{ outline: "1px solid #333" }}>
+      <Box pl={40} pr={40}>
         <img
           src="https://www.circlek.com.vn/wp-content/uploads/2022/02/960x300-6.png"
           alt=""
