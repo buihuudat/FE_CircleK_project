@@ -2,7 +2,7 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { Container, IconButton } from "@mui/material";
+import { Avatar, Container, IconButton } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
@@ -14,6 +14,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCartModal,
+  setSigninModal,
+} from "../../../redux/reducers/modalReducer";
 const dataNav = [
   {
     icon: <HomeIcon sx={{ width: "30px", height: "30px" }} />,
@@ -82,6 +87,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function Navbar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const user = useSelector((s) => s.user.data);
+
+  const cartHandleClick = () => {
+    dispatch(setCartModal(true));
+  };
+
+  const userHandleClick = () => {
+    const token = localStorage.getItem("token");
+    token ? navigate("/profile") : dispatch(setSigninModal(true));
+  };
+
   return (
     <AppBar position="fixed" sx={{ background: "#db291b", color: "#fff" }}>
       <Container maxWidth="xl">
@@ -149,11 +167,11 @@ function Navbar() {
                 inputProps={{ "aria-label": "search" }}
               />
             </Search>
-            <IconButton sx={{ ml: 2, mr: 2 }}>
+            <IconButton sx={{ ml: 2, mr: 2 }} onClick={cartHandleClick}>
               <ShoppingCartIcon sx={{ color: "white" }} />
             </IconButton>
-            <IconButton>
-              <PersonIcon sx={{ color: "white" }} />
+            <IconButton onClick={userHandleClick}>
+              <Avatar src={user.avatar || ""} alt={user.name || ""} />
             </IconButton>
           </Box>
         </Toolbar>

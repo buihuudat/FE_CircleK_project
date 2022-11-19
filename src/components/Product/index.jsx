@@ -4,7 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setProductModal } from "../../redux/reducers/modalReducer";
 
 export default function Product({
@@ -15,7 +15,6 @@ export default function Product({
   const handleClick = () => {
     dispatch(setProductModal({ status: true, data: {} }));
   };
-  console.log(useSelector((state) => state.modal));
   return (
     <Card sx={{ maxWidth: 200 }}>
       <CardActionArea onClick={handleClick}>

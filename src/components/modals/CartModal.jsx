@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { setProductModal } from "../../redux/reducers/modalReducer";
+import { setCartModal } from "../../redux/reducers/modalReducer";
 
 const style = {
   position: "absolute",
@@ -17,12 +17,11 @@ const style = {
   p: 4,
 };
 
-export default function ProductModal() {
+export default function CartModal() {
   const dispatch = useDispatch();
-  const { product } = useSelector((state) => state.modal);
-  const open = product.status;
+  const open = useSelector((state) => state.modal.cart);
   const handleClose = () => {
-    dispatch(setProductModal({ status: false, data: {} }));
+    dispatch(setCartModal(false));
   };
 
   return (
@@ -34,12 +33,7 @@ export default function ProductModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <Typography>Cart modal</Typography>
         </Box>
       </Modal>
     </div>

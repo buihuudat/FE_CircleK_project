@@ -3,17 +3,22 @@ import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../common/Navbar";
 import Footer from "../Footer";
-import ProductModel from "../modals/ProductModal";
+import ProductModal from "../modals/ProductModal";
+import CartModal from "../modals/CartModal";
+import SigninModal from "../modals/SigninModal";
+import SignupModal from "../modals/SignupModal";
 
 const AppLayout = () => {
-  const [loading, setLoading] = useState(false);
   return (
     <Box display={"flex"} flexDirection={"column"}>
       <Navbar />
       <Box flexGrow={1}>
         <Toolbar />
         <Outlet />
-        <ProductModel />
+        <ProductModal />
+        <CartModal />
+        <SigninModal />
+        <SignupModal />
       </Box>
       <Footer />
     </Box>

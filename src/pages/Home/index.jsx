@@ -1,7 +1,6 @@
-import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import banner from "../../access/imgs/banner.jpg";
-import Footer from "../../components/Footer";
 
 const HomePage = () => {
   return (
@@ -110,7 +109,7 @@ const HomePage = () => {
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
               width: "450px",
-              height: "200px",
+              height: "auto",
               p: 3,
             }}
           >
@@ -133,7 +132,7 @@ const HomePage = () => {
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
               width: "450px",
-              height: "200px",
+              height: "auto",
               p: 3,
             }}
           >

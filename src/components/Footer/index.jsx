@@ -3,6 +3,7 @@ import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import Noti from "../common/Toast";
 
 const titleFooter = [
   {
@@ -53,6 +54,18 @@ const subtitleFooter = [
     link: "",
   },
 ];
+
+const handleSendEmail = (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const email = formData.get("email");
+  if (email === "") {
+    Noti("error", "Bạn chưa nhập email");
+    return;
+  }
+  Noti("success", `Đã đăng ký thành công email: ${email}`);
+};
+
 const Footer = () => {
   return (
     <Box>
@@ -81,7 +94,7 @@ const Footer = () => {
         <Typography align="right" width={300}>
           Hãy là người đầu tiên nhận thông tin về ưu đãi, sản phẩm & dịch vụ
         </Typography>
-        <Box display={"flex"}>
+        <Box display={"flex"} component={"form"} onSubmit={handleSendEmail}>
           <TextField
             placeholder="Email..."
             sx={{
@@ -89,8 +102,10 @@ const Footer = () => {
               width: "250px",
               borderRadius: "10px",
             }}
+            name="email"
+            type={"email"}
           />
-          <Button variant="contained" color="error">
+          <Button variant="contained" color="error" type="submit">
             Send
           </Button>
         </Box>
