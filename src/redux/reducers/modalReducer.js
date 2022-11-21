@@ -8,6 +8,10 @@ const initialState = {
   signin: false,
   signup: false,
   cart: false,
+  userAdmin: {
+    status: false,
+    data: {},
+  },
 };
 
 export const modalReducer = createSlice({
@@ -26,9 +30,17 @@ export const modalReducer = createSlice({
     setCartModal: (state, action) => {
       state.cart = action.payload;
     },
+    setUserAdminModal: (state, action) => {
+      state.userAdmin = action.payload;
+    },
   },
 });
 
-export const { setProductModal, setCartModal, setSigninModal, setSignupModal } =
-  modalReducer.actions;
+export const {
+  setProductModal,
+  setCartModal,
+  setSigninModal,
+  setSignupModal,
+  setUserAdminModal,
+} = modalReducer.actions;
 export default modalReducer.reducer;

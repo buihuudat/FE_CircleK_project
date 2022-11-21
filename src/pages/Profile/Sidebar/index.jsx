@@ -14,22 +14,59 @@ import LocalMallIcon from "@mui/icons-material/LocalMall";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useLocation, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
-
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
+import PeopleIcon from "@mui/icons-material/People";
+import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
+import InventoryIcon from "@mui/icons-material/Inventory";
 const headerData = [
   {
     icon: <AccountBoxIcon />,
     text: "Profile",
     path: "profile",
+    display: 1,
   },
   {
     icon: <LocalMallIcon />,
     text: "Đơn hàng đã mua",
     path: "don-hang-da-mua",
+    display: 1,
   },
   {
     icon: <AttachMoneyIcon />,
     text: "Thống kê chi tiêu",
     path: "thong-ke-chi-tieu",
+    display: 1,
+  },
+  {
+    icon: <AdminPanelSettingsIcon />,
+    text: "Admin Page",
+    path: "admin",
+    display: 1,
+  },
+  {
+    icon: <PeopleIcon />,
+    text: "Users",
+    path: "admin/users",
+    display: 1,
+  },
+  {
+    icon: <ProductionQuantityLimitsIcon />,
+    text: "Products",
+    path: "admin/products",
+    display: 1,
+  },
+  {
+    icon: <SwitchAccountIcon />,
+    text: "Producers",
+    path: "admin/producers",
+    display: 1,
+  },
+  {
+    icon: <InventoryIcon />,
+    text: "Orders",
+    path: "admin/orders",
+    display: 1,
   },
 ];
 export default function SideBar({ drawerWidth }) {
@@ -57,16 +94,19 @@ export default function SideBar({ drawerWidth }) {
         Chào {user.name}
       </Typography>
       <MenuList>
-        {headerData.map((e, i) => (
-          <MenuItem
-            key={i}
-            sx={path === e.path && { bgcolor: "rgba(0,0,0,.05)" }}
-            onClick={() => navigate(e.path)}
-          >
-            <ListItemIcon>{e.icon}</ListItemIcon>
-            <ListItemText>{e.text}</ListItemText>
-          </MenuItem>
-        ))}
+        {headerData.map(
+          (e, i) =>
+            e.display && (
+              <MenuItem
+                key={i}
+                sx={path === e.path && { bgcolor: "rgba(0,0,0,.05)" }}
+                onClick={() => navigate(e.path)}
+              >
+                <ListItemIcon>{e.icon}</ListItemIcon>
+                <ListItemText>{e.text}</ListItemText>
+              </MenuItem>
+            )
+        )}
       </MenuList>
       <Button
         fullWidth

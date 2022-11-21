@@ -13,7 +13,6 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PersonIcon from "@mui/icons-material/Person";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCartModal,
@@ -121,20 +120,24 @@ function Navbar() {
                 cursor: "pointer",
               }}
             />
-            <img
-              src="https://www.circlek.com.vn/wp-content/themes/circlek/images/img/ckclub.png"
-              alt=""
-              style={{
-                width: "50px",
-              }}
-            />
-            <img
-              src="https://www.circlek.com.vn/wp-content/themes/circlek/images/img/logo-ck-go.png"
-              alt="logo"
-              style={{
-                width: "50px",
-              }}
-            />
+            <a href="https://www.circlek.com.vn/vi/ck-club/">
+              <img
+                src="https://www.circlek.com.vn/wp-content/themes/circlek/images/img/ckclub.png"
+                alt=""
+                style={{
+                  width: "50px",
+                }}
+              />
+            </a>
+            <a href="https://www.circlek.com.vn/ckgo/">
+              <img
+                src="https://www.circlek.com.vn/wp-content/themes/circlek/images/img/logo-ck-go.png"
+                alt="logo"
+                style={{
+                  width: "50px",
+                }}
+              />
+            </a>
             {dataNav.map((e, i) => (
               <Box
                 component={Link}

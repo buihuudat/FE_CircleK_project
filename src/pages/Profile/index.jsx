@@ -2,7 +2,6 @@ import { LoadingButton } from "@mui/lab";
 import { Avatar, Box, Button, Paper, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SideBar from "./Sidebar";
 import axiosClient from "../../api/axiosClient";
 import { setUser } from "../../redux/reducers/userReducer";
 import Noti from "../../components/common/Toast";
@@ -97,9 +96,8 @@ const Profile = () => {
   };
 
   return (
-    <Box display={"flex"} sx={{ minHeight: "calc(100vh - 60px)" }}>
-      <SideBar drawerWidth={drawerWidth} />
-      <Box pl={drawerWidth} display="flex" flexGrow={1}>
+    <Box display={"flex"}>
+      <Box display="flex" flexGrow={1}>
         <Paper
           sx={{
             m: "0 auto",
