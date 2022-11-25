@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserAdminModal } from "../../redux/reducers/modalReducer";
@@ -15,6 +14,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
+import userApi from "../../api/userApi";
+import Noti from "../common/Toast";
+import axiosClient from "../../api/axiosClient";
+import FileBase64 from "react-file-base64";
 
 const style = {
   position: "absolute",
@@ -37,7 +40,9 @@ export default function UserAdminModal() {
   const [phoneErrText, setPhoneErrText] = useState("");
   const [passwordErrText, setPasswordErrText] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [addressErrText, setAddressText] = useState("");
   const [value, setValue] = useState(1);
+  const [image, setImage] = useState("");
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.modal.userAdmin);
@@ -48,15 +53,29 @@ export default function UserAdminModal() {
     setDisable(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleChangeAvatar = (e) => {
+    setImage(e.base64);
+  };
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const getData = {
+      id: data.id,
       name: formData.get("name"),
-      password: formData.get("password"),
-      phone: formData.get("phone"),
       permission: value,
       confirmPassword: formData.get("confirmPassword"),
+      avatar: image,
+      password:
+        formData.get("password") === user.password
+          ? user.password
+          : formData.get("password"),
+      phone: Number(formData.get("phone")),
+      address: formData.get("address"),
     };
     let err = false;
     if (getData.name === "") {
@@ -83,14 +102,22 @@ export default function UserAdminModal() {
       setConfirmPassword("Mật khẩu không khớp");
       err = true;
     }
+    if (getData.address === "") {
+      setAddressText("Bạn chưa nhập địa chỉ");
+      err = true;
+    }
 
     if (err) return;
-
     console.log(getData);
-  };
-
-  const handleChange = (e) => {
-    setValue(e.target.value);
+    try {
+      const res = await axiosClient.put(`User/${user.data.id}`, getData);
+      await userApi.getAll();
+      Noti("success", "Đã cập nhật thành công ", res.name);
+      dispatch(setUserAdminModal({ status: false, data: {} }));
+      setDisable(true);
+    } catch (error) {
+      Noti("error", "Cập nhật thất bại", error.data);
+    }
   };
 
   return (
@@ -111,6 +138,9 @@ export default function UserAdminModal() {
               m: "0 auto",
             }}
           />
+          {!disable && (
+            <FileBase64 multiple={false} onDone={handleChangeAvatar} />
+          )}
           <Box component="form" onSubmit={handleSubmit}>
             <TextField
               name={"name"}
@@ -164,6 +194,17 @@ export default function UserAdminModal() {
                 helperText={confirmPassword}
               />
             )}
+            <TextField
+              name={"address"}
+              margin={"normal"}
+              label={"Địa chỉ"}
+              fullWidth
+              type={"text"}
+              defaultValue={data.address}
+              disabled={disable}
+              error={addressErrText !== ""}
+              helperText={addressErrText}
+            />
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel>Quyền</InputLabel>
               <Select

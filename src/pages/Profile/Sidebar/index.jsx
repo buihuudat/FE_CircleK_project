@@ -19,56 +19,7 @@ import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantity
 import PeopleIcon from "@mui/icons-material/People";
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import InventoryIcon from "@mui/icons-material/Inventory";
-const headerData = [
-  {
-    icon: <AccountBoxIcon />,
-    text: "Profile",
-    path: "profile",
-    display: 1,
-  },
-  {
-    icon: <LocalMallIcon />,
-    text: "Đơn hàng đã mua",
-    path: "don-hang-da-mua",
-    display: 1,
-  },
-  {
-    icon: <AttachMoneyIcon />,
-    text: "Thống kê chi tiêu",
-    path: "thong-ke-chi-tieu",
-    display: 1,
-  },
-  {
-    icon: <AdminPanelSettingsIcon />,
-    text: "Admin Page",
-    path: "admin",
-    display: 1,
-  },
-  {
-    icon: <PeopleIcon />,
-    text: "Users",
-    path: "admin/users",
-    display: 1,
-  },
-  {
-    icon: <ProductionQuantityLimitsIcon />,
-    text: "Products",
-    path: "admin/products",
-    display: 1,
-  },
-  {
-    icon: <SwitchAccountIcon />,
-    text: "Producers",
-    path: "admin/producers",
-    display: 1,
-  },
-  {
-    icon: <InventoryIcon />,
-    text: "Orders",
-    path: "admin/orders",
-    display: 1,
-  },
-];
+
 export default function SideBar({ drawerWidth }) {
   const user = useSelector((s) => s.user.data);
   const navigate = useNavigate();
@@ -79,6 +30,57 @@ export default function SideBar({ drawerWidth }) {
     localStorage.removeItem("UID");
     navigate("/");
   };
+
+  const headerData = [
+    {
+      icon: <AccountBoxIcon />,
+      text: "Profile",
+      path: "profile",
+      display: 1,
+    },
+    {
+      icon: <LocalMallIcon />,
+      text: "Đơn hàng đã mua",
+      path: "don-hang-da-mua",
+      display: 1,
+    },
+    {
+      icon: <AttachMoneyIcon />,
+      text: "Thống kê chi tiêu",
+      path: "thong-ke-chi-tieu",
+      display: 1,
+    },
+    {
+      icon: <AdminPanelSettingsIcon />,
+      text: "Admin Page",
+      path: "admin",
+      display: user.permission === 0 ? true : false,
+    },
+    {
+      icon: <PeopleIcon />,
+      text: "Users",
+      path: "admin/users",
+      display: user.permission === 0 ? true : false,
+    },
+    {
+      icon: <ProductionQuantityLimitsIcon />,
+      text: "Products",
+      path: "admin/products",
+      display: user.permission === 0 ? true : false,
+    },
+    {
+      icon: <SwitchAccountIcon />,
+      text: "Producers",
+      path: "admin/producers",
+      display: user.permission === 0 ? true : false,
+    },
+    {
+      icon: <InventoryIcon />,
+      text: "Orders",
+      path: "admin/orders",
+      display: user.permission === 0 ? true : false,
+    },
+  ];
 
   return (
     <Box

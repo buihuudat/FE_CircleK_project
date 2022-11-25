@@ -19,14 +19,21 @@ const AuthLayout = () => {
     const checkUser = async () => {
       dispatch(setLoadingR(true));
       if (UID) {
-        const user = await userApi.getUser(UID);
-        dispatch(setUser(user));
-        setLoading(true);
-        dispatch(setLoadingR(false));
+        try {
+          const user = await userApi.getUser(UID);
+          dispatch(setUser(user));
+          setLoading(true);
+          dispatch(setLoadingR(false));
+        } catch (error) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("UID");
+          navigate("/");
+          dispatch(setLoadingR(false));
+        }
       } else {
         localStorage.removeItem("token");
         navigate("/");
-        setLoadingR(false);
+        dispatch(setLoadingR(false));
       }
     };
     checkUser();

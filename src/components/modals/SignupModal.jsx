@@ -107,7 +107,9 @@ export default function SignupModal() {
       dispatch(setUser(user));
       dispatch(setSignupModal(false));
       localStorage.setItem("token", token);
+      localStorage.setItem("UID", user.id);
       setLoading(false);
+      Noti("success", "Đăng kí thành công");
     } catch (error) {
       Noti("error", error.data);
       setLoading(false);

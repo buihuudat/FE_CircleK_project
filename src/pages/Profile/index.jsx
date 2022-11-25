@@ -6,7 +6,6 @@ import axiosClient from "../../api/axiosClient";
 import { setUser } from "../../redux/reducers/userReducer";
 import Noti from "../../components/common/Toast";
 import FileBase64 from "react-file-base64";
-import GetImage from "../../components/GetImage";
 
 const Profile = () => {
   const [disable, setDisable] = useState(true);
@@ -16,13 +15,13 @@ const Profile = () => {
   const [confirmPasswordErrText, setConfirmPasswordErrText] = useState("");
   const [addressErrText, setAddressErrText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState("");
 
   const user = useSelector((state) => state.user.data);
   const dispatch = useDispatch();
-  const drawerWidth = "220px";
 
   const handleGetImage = (e) => {
-    GetImage(e.base64);
+    setImage(e.base64);
   };
 
   const handleSubmit = async (e) => {
@@ -39,6 +38,7 @@ const Profile = () => {
       phone: Number(formData.get("phone")),
       permission: 1,
       address: formData.get("address"),
+      avatar: image,
     };
 
     let err = false;
@@ -114,7 +114,7 @@ const Profile = () => {
             alt={user.name}
             sx={{ width: "100px", height: "100px", m: "0 auto" }}
           />
-          <FileBase64 multiple={false} onDone={handleGetImage} />
+          {!disable && <FileBase64 multiple={false} onDone={handleGetImage} />}
           <Box component={"form"} onSubmit={handleSubmit} pt={3} width={345}>
             <TextField
               margin="normal"

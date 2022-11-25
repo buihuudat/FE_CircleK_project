@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import loadingReducer from "./reducers/loadingReducer";
 import modalReducer from "./reducers/modalReducer";
+import productReducer from "./reducers/productReducer";
 import userReducer from "./reducers/userReducer";
 
 const store = configureStore({
@@ -8,6 +9,7 @@ const store = configureStore({
     user: userReducer,
     modal: modalReducer,
     loading: loadingReducer,
+    products: productReducer,
   },
 });
 

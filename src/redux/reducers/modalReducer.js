@@ -12,6 +12,9 @@ const initialState = {
     status: false,
     data: {},
   },
+  addUser: false,
+
+  product: false,
 };
 
 export const modalReducer = createSlice({
@@ -33,6 +36,13 @@ export const modalReducer = createSlice({
     setUserAdminModal: (state, action) => {
       state.userAdmin = action.payload;
     },
+    setAddUserModal: (state, action) => {
+      state.addUser = action.payload;
+    },
+
+    setAddProductModal: (state, action) => {
+      state.product = action.payload;
+    },
   },
 });
 
@@ -42,5 +52,8 @@ export const {
   setSigninModal,
   setSignupModal,
   setUserAdminModal,
+  setAddUserModal,
+
+  setAddProductModal,
 } = modalReducer.actions;
 export default modalReducer.reducer;

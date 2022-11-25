@@ -22,12 +22,27 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import userApi from "../../api/userApi";
-import { Button } from "@mui/material";
+import { Button, Fab } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch } from "react-redux";
-import { setUserAdminModal } from "../../redux/reducers/modalReducer";
+import {
+  setAddUserModal,
+  setUserAdminModal,
+} from "../../redux/reducers/modalReducer";
+import AddIcon from "@mui/icons-material/Add";
+import AddUserModal from "../../components/modals/AddUserModal";
+import Noti from "../../components/common/Toast";
 
-function createData(id, name, username, phone, permission, avatar, password) {
+function createData(
+  id,
+  name,
+  username,
+  phone,
+  permission,
+  avatar,
+  password,
+  address
+) {
   return {
     id,
     name,
@@ -36,10 +51,11 @@ function createData(id, name, username, phone, permission, avatar, password) {
     permission,
     avatar,
     password,
+    address,
   };
 }
 
-const rows = [];
+let rows = [];
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -171,64 +187,6 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Users List
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-}
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
 export default function User() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -238,33 +196,23 @@ export default function User() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [loading, setLoading] = React.useState(false);
   const [btnLoading, setBtnLoading] = React.useState(false);
+  const [idSelected, setIdSelected] = React.useState("");
+  const [users, setUsers] = React.useState([]);
 
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     const getUsers = async () => {
       try {
-        const users = await userApi.getAll();
-        users.map((user) => {
-          rows.push(
-            createData(
-              user.id,
-              user.name,
-              user.username,
-              user.phone,
-              user.permission,
-              user.avatar,
-              user.password
-            )
-          );
-        });
+        const res = await userApi.getAll();
+        rows = res;
         setLoading(true);
       } catch (error) {
         setLoading(false);
       }
     };
     getUsers();
-  }, []);
+  }, [dispatch]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -281,12 +229,12 @@ export default function User() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, row) => {
+    const selectedIndex = selected.indexOf(row.name);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, row.name);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -297,7 +245,7 @@ export default function User() {
         selected.slice(selectedIndex + 1)
       );
     }
-
+    setIdSelected(row.id);
     setSelected(newSelected);
   };
 
@@ -314,12 +262,38 @@ export default function User() {
     setDense(event.target.checked);
   };
 
-  const handleDelete = (id) => {
-    console.log(id);
+  const handleDelete = async () => {
+    const id = idSelected;
+    setBtnLoading(true);
+    try {
+      await userApi.delete(id);
+      await userApi.getAll();
+      const user = await userApi.getAll();
+      Noti("success", "Đã xóa thành công");
+      setBtnLoading(false);
+      rows.push(
+        createData(
+          user.id,
+          user.name,
+          user.username,
+          user.phone,
+          user.permission,
+          user.avatar,
+          user.password
+        )
+      );
+    } catch (error) {
+      Noti("error", "Xóa thất bại", error.data);
+      setBtnLoading(false);
+    }
   };
 
   const handleView = (row) => {
     dispatch(setUserAdminModal({ status: true, data: row }));
+  };
+
+  const handleAddUser = () => {
+    dispatch(setAddUserModal(true));
   };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -327,6 +301,64 @@ export default function User() {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+
+  function EnhancedTableToolbar(props) {
+    const { numSelected } = props;
+
+    return (
+      <Toolbar
+        sx={{
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 },
+          ...(numSelected > 0 && {
+            bgcolor: (theme) =>
+              alpha(
+                theme.palette.primary.main,
+                theme.palette.action.activatedOpacity
+              ),
+          }),
+        }}
+      >
+        {numSelected > 0 ? (
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {numSelected} selected
+          </Typography>
+        ) : (
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            variant="h6"
+            id="tableTitle"
+            component="div"
+          >
+            Users List
+          </Typography>
+        )}
+
+        {numSelected > 0 ? (
+          <Tooltip title="Delete">
+            <IconButton onClick={handleDelete}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Filter list">
+            <IconButton>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Toolbar>
+    );
+  }
+
+  EnhancedTableToolbar.propTypes = {
+    numSelected: PropTypes.number.isRequired,
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -359,7 +391,7 @@ export default function User() {
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.name)}
+                        onClick={(event) => handleClick(event, row)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
@@ -386,7 +418,13 @@ export default function User() {
                         <TableCell align="right">{row.name}</TableCell>
                         <TableCell align="right">{row.username}</TableCell>
                         <TableCell align="right">{row.phone}</TableCell>
-                        <TableCell align="right">{row.permission}</TableCell>
+                        <TableCell align="right">
+                          {row.permission === 0
+                            ? "admin"
+                            : row.permission === 1
+                            ? "Người dùng"
+                            : "Nhân viên"}
+                        </TableCell>
                         <TableCell align="right">
                           <Box
                             display={"flex"}
@@ -394,15 +432,6 @@ export default function User() {
                             justifyContent={"end"}
                             gap={1}
                           >
-                            <LoadingButton
-                              loading={btnLoading}
-                              color="error"
-                              variant="contained"
-                              size="small"
-                              onClick={() => handleDelete(row.id)}
-                            >
-                              Delete
-                            </LoadingButton>
                             <Button
                               variant="contained"
                               size="small"
@@ -442,6 +471,24 @@ export default function User() {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
       />
+
+      <Box>
+        <Fab
+          size="large"
+          color="primary"
+          aria-label="add"
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            m: 3,
+          }}
+          onClick={handleAddUser}
+        >
+          <AddIcon />
+        </Fab>
+      </Box>
+      <AddUserModal />
     </Box>
   );
 }
