@@ -5,7 +5,7 @@ import userApi from "../../api/userApi";
 import { setUser } from "../../redux/reducers/userReducer";
 import { setLoadingR } from "../../redux/reducers/loadingReducer";
 import { Box } from "@mui/material";
-import SideBar from "../../pages/Profile/Sidebar";
+import SideBar from "../common/Sidebar";
 
 const AuthLayout = () => {
   const [loading, setLoading] = useState(false);

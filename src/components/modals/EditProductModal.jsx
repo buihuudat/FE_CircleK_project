@@ -3,7 +3,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { setAddProductModal } from "../../redux/reducers/modalReducer";
+import {
+  setAddProductModal,
+  setEditProducerModal,
+  setEditProductModal,
+} from "../../redux/reducers/modalReducer";
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import moment from "moment";
@@ -30,7 +34,7 @@ const style = {
   borderRadius: "10px",
 };
 
-export default function AddProductModal() {
+export default function EditProductModal() {
   const [nameErr, setNameErr] = useState("");
   const [descErr, setDesErr] = useState("");
   const [countErr, setCountErr] = useState(0);
@@ -44,10 +48,13 @@ export default function AddProductModal() {
   const [value, setValue] = useState(0);
   const [kieu, setKieu] = useState("");
   const [types, setTypes] = useState([]);
-  const [type, setType] = useState("");
+  const [type, setType] = useState(null);
   const [producers, setProducers] = useState([]);
 
-  const open = useSelector((state) => state.modal.product);
+  const productRedux = useSelector((state) => state.modal.editProduct);
+  const open = productRedux.status;
+  const productData = productRedux.data;
+
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -69,16 +76,23 @@ export default function AddProductModal() {
     };
     getProducts();
 
-    const getProducrs = async () => {
+    const getProducers = async () => {
       const producers = await producerApi.getAll();
       setProducers(producers);
     };
-    getProducrs();
+    getProducers();
   }, []);
 
   const handleClose = () => {
-    dispatch(setAddProductModal(false));
+    dispatch(setEditProductModal({ status: false, data: {} }));
     setLoading(false);
+
+    setNameErr("");
+    setDesErr("");
+    setHsdErr("");
+    setImage("");
+    setCountErr(0);
+    setPriceErr(0);
   };
 
   const handleSelectImage = (e) => {
@@ -107,7 +121,7 @@ export default function AddProductModal() {
       image,
       count: formData.get("count"),
       price: formData.get("price"),
-      type: `${kieu}/${type}`,
+      type,
       hsx: formData.get("hsx"),
       hsd: formData.get("hsd"),
     };
@@ -126,6 +140,10 @@ export default function AddProductModal() {
     }
     if (data.price === 0) {
       setPriceErr("Bạn chưa nhập giá tiền");
+      err = true;
+    }
+    if (data.price.length < 4) {
+      setPriceErr("Giá tiền không hợp lệ");
       err = true;
     }
     if (data.image === "") {
@@ -171,21 +189,17 @@ export default function AddProductModal() {
             Thêm sản phẩm mới
           </Typography>
           <Box component="form" onSubmit={handleSubmit}>
-            {image === "" ? (
-              <Typography>Chọn 1 ảnh</Typography>
-            ) : (
-              <img
-                src={image}
-                alt="image"
-                style={{
-                  width: 400,
-                  height: 200,
-                  display: "flex",
-                  justifyContent: "center",
-                  margin: "0 auto",
-                }}
-              />
-            )}
+            <img
+              src={image || productData.image}
+              alt="image"
+              style={{
+                width: 400,
+                height: 200,
+                display: "flex",
+                justifyContent: "center",
+                margin: "0 auto",
+              }}
+            />
             <FileBase64 multiple={false} onDone={handleSelectImage} />
             <TextField
               label="Tên sản phẩm"
@@ -194,6 +208,7 @@ export default function AddProductModal() {
               error={nameErr !== ""}
               helperText={nameErr}
               fullWidth
+              defaultValue={productData.name}
             />
             <TextField
               label="Thông tin sản phẩm"
@@ -202,6 +217,7 @@ export default function AddProductModal() {
               error={descErr !== ""}
               helperText={descErr}
               fullWidth
+              defaultValue={productData.description}
             />
             <FormControl sx={{ width: "45%", mr: "5%" }} margin="normal">
               <InputLabel id="demo-simple-select-label">Kiểu</InputLabel>
@@ -219,7 +235,11 @@ export default function AddProductModal() {
               error={type === ""}
             >
               <InputLabel id="demo-simple-select-label">Loại</InputLabel>
-              <Select value={type} label="Loại" onChange={handleChangeType}>
+              <Select
+                value={type ?? productData.type}
+                label="Loại"
+                onChange={handleChangeType}
+              >
                 {types?.map((e, i) => (
                   <MenuItem key={i} value={e.type}>
                     {e.text}
@@ -236,7 +256,7 @@ export default function AddProductModal() {
                 label="Nhà sản xuất"
                 onChange={handleChange}
               >
-                {producers.map((producer, i) => (
+                {producers.map((producer) => (
                   <MenuItem key={producer.id} value={producer.id}>
                     {producer.name}
                   </MenuItem>
@@ -250,6 +270,7 @@ export default function AddProductModal() {
               type="number"
               error={countErr !== 0}
               helperText={countErr !== 0}
+              defaultValue={productData.count}
               sx={{ width: "45%", mr: "5%" }}
             />
             <TextField
@@ -258,7 +279,8 @@ export default function AddProductModal() {
               name="price"
               type={"number"}
               error={priceErr !== 0}
-              helperText={priceErr !== 0}
+              defaultValue={productData.price}
+              helperText={priceErr}
               sx={{ width: "45%", ml: "5%" }}
             />
             <TextField
@@ -269,7 +291,7 @@ export default function AddProductModal() {
               helperText={hsxErr}
               sx={{ width: "45%", mr: "5%" }}
               type={"date"}
-              defaultValue={moment(new Date()).format("yyyy-MM-DD")}
+              defaultValue={moment(productData.hsx).format("yyyy-MM-DD")}
             />
             <TextField
               label="Hạn sử dụng"
@@ -277,7 +299,7 @@ export default function AddProductModal() {
               name="hsd"
               type={"date"}
               error={hsdErr !== ""}
-              defaultValue={moment(new Date()).format("yyyy-MM-DD")}
+              defaultValue={moment(productData.hsd).format("yyyy-MM-DD")}
               sx={{ width: "45%", ml: "5%" }}
             />
             <Box>

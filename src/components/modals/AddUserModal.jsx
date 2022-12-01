@@ -170,7 +170,7 @@ export default function AddUserModal() {
             />
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel>Quyền hạn</InputLabel>
-              <Select label="Quyền hạn" onChange={handleChange} value={1}>
+              <Select label="Quyền hạn" onChange={handleChange} value={value}>
                 <MenuItem value={0}>ADMIN</MenuItem>
                 <MenuItem value={1}>NGƯỜI DÙNG</MenuItem>
                 <MenuItem value={2}>NHÂN VIÊN</MenuItem>
@@ -184,7 +184,7 @@ export default function AddUserModal() {
                 variant={"contained"}
                 type="submit"
               >
-                Thêm người dùng
+                Thêm {["ADMIN", "người dùng", "nhân viên"][value]}
               </LoadingButton>
               <Button
                 fullWidth

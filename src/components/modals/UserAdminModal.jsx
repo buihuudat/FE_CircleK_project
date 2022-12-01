@@ -41,8 +41,8 @@ export default function UserAdminModal() {
   const [passwordErrText, setPasswordErrText] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [addressErrText, setAddressText] = useState("");
-  const [value, setValue] = useState(1);
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
+  const [value, setValue] = useState(null);
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.modal.userAdmin);
@@ -66,17 +66,15 @@ export default function UserAdminModal() {
     const formData = new FormData(e.target);
     const getData = {
       id: data.id,
-      name: formData.get("name"),
-      permission: value,
+      name: formData.get("name") || data.name,
+      permission: value ?? data.permission,
       confirmPassword: formData.get("confirmPassword"),
-      avatar: image,
-      password:
-        formData.get("password") === user.password
-          ? user.password
-          : formData.get("password"),
-      phone: Number(formData.get("phone")),
-      address: formData.get("address"),
+      avatar: image ?? data.avatar,
+      password: formData.get("password") || data.password,
+      phone: Number(formData.get("phone")) || data.phone,
+      address: formData.get("address") || data.address,
     };
+    console.log(getData);
     let err = false;
     if (getData.name === "") {
       setNameErrText("Bạn chưa nhập tên");
@@ -108,7 +106,6 @@ export default function UserAdminModal() {
     }
 
     if (err) return;
-    console.log(getData);
     try {
       const res = await axiosClient.put(`User/${user.data.id}`, getData);
       await userApi.getAll();
@@ -119,7 +116,6 @@ export default function UserAdminModal() {
       Noti("error", "Cập nhật thất bại", error.data);
     }
   };
-
   return (
     <div>
       <Modal

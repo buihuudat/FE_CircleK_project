@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
 import {
   Button,
+  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   MenuItem,
@@ -24,7 +26,10 @@ export default function SideBar({ drawerWidth }) {
   const user = useSelector((s) => s.user.data);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const path = pathname.split("/")[1];
+  const path = pathname.split("/")[2]
+    ? pathname.split("/")[1] + "/" + pathname.split("/")[2]
+    : pathname.split("/")[1];
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("UID");
@@ -54,31 +59,31 @@ export default function SideBar({ drawerWidth }) {
       icon: <AdminPanelSettingsIcon />,
       text: "Admin Page",
       path: "admin",
-      display: user.permission === 0 ? true : false,
+      display: user.permission === 1 ? false : true,
     },
     {
       icon: <PeopleIcon />,
       text: "Users",
       path: "admin/users",
-      display: user.permission === 0 ? true : false,
+      display: user.permission === 1 ? false : true,
     },
     {
       icon: <ProductionQuantityLimitsIcon />,
       text: "Products",
       path: "admin/products",
-      display: user.permission === 0 ? true : false,
+      display: user.permission === 1 ? false : true,
     },
     {
       icon: <SwitchAccountIcon />,
       text: "Producers",
       path: "admin/producers",
-      display: user.permission === 0 ? true : false,
+      display: user.permission === 1 ? false : true,
     },
     {
       icon: <InventoryIcon />,
       text: "Orders",
       path: "admin/orders",
-      display: user.permission === 0 ? true : false,
+      display: user.permission === 1 ? false : true,
     },
   ];
 

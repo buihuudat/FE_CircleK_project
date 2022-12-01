@@ -20,6 +20,8 @@ import User from "./pages/Admin/User";
 import Product from "./pages/Admin/Product";
 import Producer from "./pages/Admin/Producer";
 import Orders from "./pages/Admin/Orders";
+import Drink from "./pages/FoodAndDrink/Drink";
+import Food from "./pages/FoodAndDrink/Food";
 
 const App = () => {
   const theme = createTheme({
@@ -36,15 +38,18 @@ const App = () => {
         <Routes>
           <Route path="/" element={<AppLayout />}>
             <Route path="/" index element={<HomePage />} />
-            <Route path="/he-thong-circle-k" element={<MapStore />} />
-            <Route path="/uu-dai-dac-biet" element={<UuDaiDacBiet />} />
-            <Route path="/thuc-an-thuc-uong" element={<FoodDrink />} />
-            <Route path="/san-pham-dich-vu" element={<ProductServices />} />
+            <Route path="he-thong-circle-k" element={<MapStore />} />
+            <Route path="uu-dai-dac-biet" element={<UuDaiDacBiet />} />
+            <Route path="thuc-an-thuc-uong" element={<FoodDrink />}>
+              <Route path="thuc-an" element={<Food />} />
+              <Route path="thuc-uong" element={<Drink />} />
+            </Route>
+            <Route path="san-pham-dich-vu" element={<ProductServices />} />
             <Route path="" element={<AuthLayout />}>
               <Route path="profile" element={<Profile />} />
               <Route path="don-hang-da-mua" element={<DaMua />} />
               <Route path="thong-ke-chi-tieu" element={<ThongKeChiTieu />} />
-              <Route path="/admin" element={<AdminLayout />}>
+              <Route path="admin" element={<AdminLayout />}>
                 <Route path="" element={<Home />} />
                 <Route path="users" element={<User />} />
                 <Route path="products" element={<Product />} />

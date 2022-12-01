@@ -1,34 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import productApi from "../../../api/productApi";
 import { setProducts } from "../../../redux/reducers/productReducer";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { setProductModal } from "../../../redux/reducers/modalReducer";
+import { setAddProductModal } from "../../../redux/reducers/modalReducer";
 import AddProductModal from "../../../components/modals/AddProductModal";
 import ProductCard from "./ProductCard";
+import EditProductModal from "../../../components/modals/EditProductModal";
 
 const Product = () => {
-  const products = useSelector((state) => state.products.data);
+  const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user.data);
+
   useEffect(() => {
     const getProduct = async () => {
       const products = await productApi.getAllProducts();
-
-      dispatch(setProducts(products));
+      setProducts(products);
     };
     getProduct();
   }, [dispatch]);
 
   return (
     <Box p={3} display="flex" flexDirection={"row"} flexWrap="wrap" gap={2}>
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
+      {products.length === 0 && (
+        <Typography align="center" variant="h5" fontWeight={600}>
+          Chưa có sản phẩm...
+        </Typography>
+      )}
+      {products.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          admin={user.permission}
+        />
+      ))}
       <Fab
-        onClick={() => dispatch(setProductModal(true))}
+        onClick={() => dispatch(setAddProductModal(true))}
         color="primary"
         aria-label="add"
         sx={{
@@ -41,6 +53,7 @@ const Product = () => {
         <AddIcon />
       </Fab>
       <AddProductModal />
+      <EditProductModal />
     </Box>
   );
 };

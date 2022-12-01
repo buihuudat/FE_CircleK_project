@@ -1,10 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  product: {
-    status: false,
-    data: {},
-  },
   signin: false,
   signup: false,
   cart: false,
@@ -15,15 +11,33 @@ const initialState = {
   addUser: false,
 
   product: false,
+  editProduct: {
+    status: false,
+    data: {},
+  },
+  showProductModal: {
+    status: false,
+    data: {},
+  },
+
+  producer: false,
+  editProducer: {
+    status: false,
+    data: {},
+  },
 };
 
 export const modalReducer = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    setProductModal: (state, action) => {
+    setAddProductModal: (state, action) => {
       state.product = action.payload;
     },
+    setShowProdctModal: (state, action) => {
+      state.showProductModal = action.payload;
+    },
+
     setSigninModal: (state, action) => {
       state.signin = action.payload;
     },
@@ -40,20 +54,30 @@ export const modalReducer = createSlice({
       state.addUser = action.payload;
     },
 
-    setAddProductModal: (state, action) => {
-      state.product = action.payload;
+    setEditProductModal: (state, action) => {
+      state.editProduct = action.payload;
+    },
+    setAddProducerModal: (state, action) => {
+      state.producer = action.payload;
+    },
+    setEditProducerModal: (state, action) => {
+      state.editProducer = action.payload;
     },
   },
 });
 
 export const {
-  setProductModal,
+  setAddProductModal,
   setCartModal,
   setSigninModal,
   setSignupModal,
   setUserAdminModal,
   setAddUserModal,
 
-  setAddProductModal,
+  setEditProductModal,
+  setShowProdctModal,
+
+  setAddProducerModal,
+  setEditProducerModal,
 } = modalReducer.actions;
 export default modalReducer.reducer;
