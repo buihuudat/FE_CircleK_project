@@ -14,9 +14,10 @@ export const productType = [
     ],
   },
   {
-    type: "dring",
+    type: "drink",
     text: "Thức uống",
     data: [
+      { type: "doUongTongHop", text: "Đồ uống tổng hợp" },
       { type: "caPheVN", text: "Cà phê Việt Nam" },
       { type: "sanPhamNestle", text: "Sản phẩm Nestle" },
       { type: "traSua", text: "Trà sữa" },

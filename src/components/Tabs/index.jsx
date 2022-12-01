@@ -2,10 +2,8 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Product from "../Product";
-import productApi from "../../api/productApi";
 import { productType } from "../../access/dataType/TypeProducts";
 import AboutPrroductModal from "../modals/AboutProductModal";
 import _ from "lodash";
@@ -43,23 +41,15 @@ function a11yProps(index) {
   };
 }
 
-export default function Tabsbar({ header }) {
+export default function Tabsbar({ header, products }) {
   const [value, setValue] = React.useState(0);
-  const [products, setProducts] = React.useState([]);
-  const [type, setType] = React.useState("");
+  const [type, setType] = React.useState(productType[header].data[0].type);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  React.useEffect(() => {
-    const getProducts = async () => {
-      const productsData = await productApi.getAllProducts();
-      setProducts(productsData);
-      // setType(productsData[header].data[0].type);
-    };
-    getProducts();
-  }, []);
+  console.log(productType[header].data[0].type, type);
 
   const getProduct = (t) =>
     _.filter(products, (e) => e.type.split("/")[1] === t);
@@ -90,14 +80,17 @@ export default function Tabsbar({ header }) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        {getProduct(type)?.map((product, i) => (
-          <Product
-            img={product.image}
-            text={product.name}
-            product={product}
-            key={i}
-          />
-        ))}
+        {type === productType[0].data[0].type
+          ? products.map((product, i) => (
+              <Box key={i}>
+                <Product product={product} />
+              </Box>
+            ))
+          : getProduct(type).map((product, i) => (
+              <Box key={i}>
+                <Product product={product} />
+              </Box>
+            ))}
       </TabPanel>
       <AboutPrroductModal />
     </Box>

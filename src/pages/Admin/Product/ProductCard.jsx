@@ -31,7 +31,14 @@ const ProductCard = ({ product, admin = 1 }) => {
 
   return (
     <Box>
-      <Card sx={{ width: 255, maxHeight: 350 }}>
+      <Card
+        sx={{
+          width: 255,
+          height: 350,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <CardMedia
           component="img"
           height="140"
@@ -59,6 +66,7 @@ const ProductCard = ({ product, admin = 1 }) => {
               display: "flex",
               justifyContent: "center",
               backdropFilter: "blur(3px)",
+              marginTop: "auto",
             }}
           >
             <LoadingButton

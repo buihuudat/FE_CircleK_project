@@ -1,9 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
-import { useState } from "react";
 import banner from "../../access/imgs/banner.jpg";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import productApi from "../../api/productApi";
+import { useDispatch } from "react-redux";
+import { setProducts } from "../../redux/reducers/productReducer";
 
 const img1 =
   "https://www.circlek.com.vn/wp-content/uploads/2021/10/Thức-ăn_468wx468h.jpg";
@@ -13,6 +14,15 @@ const img2 =
 const FoodDrink = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    const getProducts = async () => {
+      const productsData = await productApi.getAllProducts();
+      dispatch(setProducts(productsData));
+    };
+    getProducts();
+  }, [dispatch, navigate]);
 
   return (
     <Box>
