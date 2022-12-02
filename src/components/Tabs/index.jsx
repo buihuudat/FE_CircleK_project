@@ -44,12 +44,10 @@ function a11yProps(index) {
 export default function Tabsbar({ header, products }) {
   const [value, setValue] = React.useState(0);
   const [type, setType] = React.useState(productType[header].data[0].type);
-
+  const [indexTab, setIndexTab] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  console.log(productType[header].data[0].type, type);
 
   const getProduct = (t) =>
     _.filter(products, (e) => e.type.split("/")[1] === t);
@@ -74,13 +72,16 @@ export default function Tabsbar({ header, products }) {
               key={i}
               label={e.text}
               {...a11yProps(i)}
-              onClick={() => setType(e.type)}
+              onClick={() => {
+                setType(e.type);
+                setIndexTab(i);
+              }}
             />
           ))}
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
-        {type === productType[0].data[0].type
+      <TabPanel value={value} index={indexTab}>
+        {type === productType[header].data[0].type
           ? products.map((product, i) => (
               <Box key={i}>
                 <Product product={product} />

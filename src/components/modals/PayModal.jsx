@@ -4,13 +4,14 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { setCartModal, setPayModal } from "../../redux/reducers/modalReducer";
-import { Button, IconButton, Paper } from "@mui/material";
+import { Button, IconButton, Paper, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import _ from "lodash";
-import { currentFormat } from "../../components/common/FormatCurrency";
-import { setInforPay } from "../../redux/reducers/modalReducer";
+import { currentFormat } from "../common/FormatCurrency";
 import { useState } from "react";
+import Noti from "../../components/common/Toast";
+import { setAddCart } from "../../redux/reducers/productReducer";
 
 const style = {
   position: "absolute",
@@ -24,20 +25,21 @@ const style = {
   p: 4,
 };
 
-export default function CartModal() {
+export default function PayModal() {
   const dispatch = useDispatch();
-  const open = useSelector((state) => state.modal.cart);
+  const open = useSelector((state) => state.modal.pay);
   const user = useSelector((state) => state.user.data);
 
   const products = useSelector((state) => state.products.addCart);
 
   const handleClose = () => {
-    dispatch(setCartModal(false));
+    dispatch(setPayModal(false));
   };
 
   const handlePay = () => {
-    dispatch(setCartModal(false));
-    user.id ? dispatch(setPayModal(true)) : dispatch(setInforPay(true));
+    dispatch(setPayModal(false));
+    Noti("success", "Đặt hàng thành công");
+    dispatch(setAddCart([]));
   };
 
   const CartItem = ({ product }) => {
@@ -118,6 +120,8 @@ export default function CartModal() {
     );
   };
 
+  const sumPrice = () => _.sumBy(products, (e) => e.price * e.prdCount);
+
   return (
     <div>
       <Modal
@@ -128,7 +132,7 @@ export default function CartModal() {
       >
         <Box sx={style}>
           <Typography align="center" fontWeight={600} variant="h4">
-            Giỏ hàng
+            Thanh toán
           </Typography>
           {products.length > 0 ? (
             <Box
@@ -149,6 +153,40 @@ export default function CartModal() {
             </Typography>
           )}
 
+          <Box pt={3}>
+            <Box
+              display="flex"
+              flexDirection={"row"}
+              justifyContent="space-between"
+              gap={4}
+            >
+              <TextField label="Nhập mã giảm giá" fullWidth />
+              <Button variant="contained" fullWidth>
+                Áp dụng
+              </Button>
+            </Box>
+            <TextField
+              defaultValue={user.address}
+              fullWidth
+              disabled
+              label="Địa chỉ"
+              margin="normal"
+            />
+          </Box>
+          <Box
+            display={"flex"}
+            flexDirection="row"
+            justifyContent={"space-between"}
+            p={4}
+            alignItems="center"
+          >
+            <Typography fontWeight={600} variant="h4">
+              Tổng thanh toán
+            </Typography>
+            <Typography variant="h4" color="orange">
+              {currentFormat(sumPrice())}
+            </Typography>
+          </Box>
           <Box
             display={"flex"}
             flexDirection="row"

@@ -25,6 +25,9 @@ const initialState = {
     status: false,
     data: {},
   },
+
+  pay: false,
+  inforPay: false,
 };
 
 export const modalReducer = createSlice({
@@ -63,6 +66,12 @@ export const modalReducer = createSlice({
     setEditProducerModal: (state, action) => {
       state.editProducer = action.payload;
     },
+    setPayModal: (state, action) => {
+      state.pay = action.payload;
+    },
+    setInforPay: (state, action) => {
+      state.inforPay = action.payload;
+    },
   },
 });
 
@@ -79,5 +88,7 @@ export const {
 
   setAddProducerModal,
   setEditProducerModal,
+  setInforPay,
+  setPayModal,
 } = modalReducer.actions;
 export default modalReducer.reducer;

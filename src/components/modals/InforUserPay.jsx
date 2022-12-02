@@ -3,14 +3,27 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { setCartModal, setPayModal } from "../../redux/reducers/modalReducer";
-import { Button, IconButton, Paper } from "@mui/material";
+import {
+  setCartModal,
+  setInforPay,
+  setPayModal,
+  setSigninModal,
+} from "../../redux/reducers/modalReducer";
+import {
+  Button,
+  Chip,
+  Divider,
+  IconButton,
+  Paper,
+  TextField,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import _ from "lodash";
-import { currentFormat } from "../../components/common/FormatCurrency";
-import { setInforPay } from "../../redux/reducers/modalReducer";
+import { currentFormat } from "../common/FormatCurrency";
 import { useState } from "react";
+import Noti from "../../components/common/Toast";
+import { setAddCart } from "../../redux/reducers/productReducer";
 
 const style = {
   position: "absolute",
@@ -24,20 +37,15 @@ const style = {
   p: 4,
 };
 
-export default function CartModal() {
+export default function InforUserPay() {
   const dispatch = useDispatch();
-  const open = useSelector((state) => state.modal.cart);
+  const open = useSelector((state) => state.modal.inforPay);
   const user = useSelector((state) => state.user.data);
 
   const products = useSelector((state) => state.products.addCart);
 
   const handleClose = () => {
-    dispatch(setCartModal(false));
-  };
-
-  const handlePay = () => {
-    dispatch(setCartModal(false));
-    user.id ? dispatch(setPayModal(true)) : dispatch(setInforPay(true));
+    dispatch(setInforPay(false));
   };
 
   const CartItem = ({ product }) => {
@@ -118,6 +126,27 @@ export default function CartModal() {
     );
   };
 
+  const sumPrice = () => _.sumBy(products, (e) => e.price * e.prdCount);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = {
+      name: formData.get("name"),
+      phone: formData.get("phone"),
+      address: formData.get("address"),
+    };
+
+    Noti("success", "Đăt hành thành công");
+    dispatch(setAddCart([]));
+    dispatch(setInforPay(false));
+  };
+
+  const handleLogin = () => {
+    dispatch(setInforPay(false));
+    dispatch(setSigninModal(true));
+  };
+
   return (
     <div>
       <Modal
@@ -128,53 +157,97 @@ export default function CartModal() {
       >
         <Box sx={style}>
           <Typography align="center" fontWeight={600} variant="h4">
-            Giỏ hàng
+            Xác nhận đơn hàng
           </Typography>
-          {products.length > 0 ? (
-            <Box
-              display={"flex"}
-              maxHeight={600}
-              overflow="auto"
-              flexDirection="column"
-              gap={2}
-              pt={3}
-            >
-              {products.map((product, i) => (
-                <CartItem key={i} product={product} />
-              ))}
-            </Box>
-          ) : (
-            <Typography align="center" pt={2}>
-              Chưa có sản phẩm
-            </Typography>
-          )}
 
           <Box
             display={"flex"}
-            flexDirection="row"
-            justifyContent={"center"}
-            pt={4}
-            gap={4}
+            maxHeight={600}
+            overflow="auto"
+            flexDirection="column"
+            gap={2}
+            pt={3}
           >
-            <Button
-              fullWidth
-              color="warning"
-              variant="contained"
-              onClick={handleClose}
+            {products.map((product, i) => (
+              <CartItem key={i} product={product} />
+            ))}
+          </Box>
+
+          <Box pt={3}>
+            {/* voucher */}
+            <Box
+              display="flex"
+              flexDirection={"row"}
+              justifyContent="space-between"
+              gap={4}
+              pb={3}
             >
-              Mua thêm
-            </Button>
-            {products.length > 0 && (
+              <TextField label="Nhập mã giảm giá" fullWidth />
+              <Button variant="outlined" fullWidth>
+                Áp dụng
+              </Button>
+            </Box>
+
+            <Divider>
+              <Chip label="Thông tin người nhận" />
+            </Divider>
+            {/* form */}
+            <Box component="form" onSubmit={handleSubmit} pb={3}>
+              <TextField
+                defaultValue={user.address}
+                sx={{ width: "45%" }}
+                label="Họ tên người nhận"
+                name="name"
+                required
+                margin="normal"
+              />
+              <TextField
+                sx={{ width: "45%", marginLeft: "10%" }}
+                name="phone"
+                fullWidth
+                label="Số điện thoại"
+                required
+                margin="normal"
+              />
+              <TextField
+                required
+                fullWidth
+                name="address"
+                label="Thêm địa chỉ"
+                margin="normal"
+              />
+              {/* price */}
+              <Box
+                display={"flex"}
+                flexDirection="row"
+                justifyContent={"space-between"}
+                p={4}
+                alignItems="center"
+              >
+                <Typography fontWeight={600} variant="h4">
+                  Tổng thanh toán
+                </Typography>
+                <Typography variant="h4" color="orange">
+                  {currentFormat(sumPrice())}
+                </Typography>
+              </Box>
               <Button
                 color="success"
                 variant="contained"
                 fullWidth
-                onClick={handlePay}
+                type="submit"
               >
                 Thanh toán
               </Button>
-            )}
+            </Box>
           </Box>
+
+          <Divider sx={{ mb: 1 }}>
+            <Chip label="Đã có tài khoản?" />
+          </Divider>
+          <Button fullWidth variant="outlined" onClick={handleLogin}>
+            Đăng nhập
+          </Button>
         </Box>
       </Modal>
     </div>

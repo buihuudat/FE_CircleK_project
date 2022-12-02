@@ -12,6 +12,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
 import { IconButton } from "@mui/material";
+import Noti from "../common/Toast";
+import { setAddCart } from "../../redux/reducers/productReducer";
+import { currentFormat } from "../common/FormatCurrency";
 const style = {
   position: "absolute",
   top: "50%",
@@ -27,10 +30,26 @@ export default function AboutPrroductModal() {
   const [heart, setHeart] = useState(0);
 
   const showProduct = useSelector((state) => state.modal.showProductModal);
+  const cart = useSelector((state) => state.products.addCart);
   const open = showProduct.status;
   const { product = [] } = showProduct.data;
+
   const dispatch = useDispatch();
   const handleClose = () => {
+    dispatch(setShowProdctModal({ status: false, data: {} }));
+  };
+
+  const handleAddProduct = () => {
+    dispatch(
+      setAddCart([
+        ...cart,
+        {
+          ...product,
+          prdCount: 1,
+        },
+      ])
+    );
+    Noti("success", "Đã thêm vào giỏ hàng");
     dispatch(setShowProdctModal({ status: false, data: {} }));
   };
 
@@ -61,7 +80,10 @@ export default function AboutPrroductModal() {
                 {product.name}
               </Typography>
               <Typography>{product.description}</Typography>
-              <Button variant="contained">
+              <Typography variant="h5" color={"orange"}>
+                {currentFormat(product.price)}
+              </Typography>
+              <Button variant="contained" onClick={handleAddProduct}>
                 Thêm vào giỏ hàng <AddShoppingCartIcon />
               </Button>
             </Box>

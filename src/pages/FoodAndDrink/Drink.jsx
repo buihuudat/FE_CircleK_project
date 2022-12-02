@@ -19,6 +19,7 @@ const Drink = () => {
     };
     getProducts();
   }, [productsData]);
+
   return (
     <Box minHeight={"100vh"}>
       {products && <Tabsbar header={1} products={products} />}

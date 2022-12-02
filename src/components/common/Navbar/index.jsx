@@ -2,7 +2,7 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { Avatar, Container, IconButton } from "@mui/material";
+import { Avatar, Badge, Container, IconButton } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
@@ -89,6 +89,7 @@ function Navbar() {
   const dispatch = useDispatch();
 
   const user = useSelector((s) => s.user.data);
+  const cart = useSelector((state) => state.products.addCart).length;
 
   const cartHandleClick = () => {
     dispatch(setCartModal(true));
@@ -171,7 +172,13 @@ function Navbar() {
               />
             </Search>
             <IconButton sx={{ ml: 2, mr: 2 }} onClick={cartHandleClick}>
-              <ShoppingCartIcon sx={{ color: "white" }} />
+              {cart > 0 ? (
+                <Badge badgeContent={cart} color={"primary"}>
+                  <ShoppingCartIcon sx={{ color: "white" }} />
+                </Badge>
+              ) : (
+                <ShoppingCartIcon sx={{ color: "white" }} />
+              )}
             </IconButton>
             <IconButton onClick={userHandleClick}>
               <Avatar src={user.avatar || ""} alt={user.name || ""} />
