@@ -12,6 +12,7 @@ import { currentFormat } from "../common/FormatCurrency";
 import { useState } from "react";
 import Noti from "../../components/common/Toast";
 import { setAddCart } from "../../redux/reducers/productReducer";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -30,6 +31,7 @@ export default function PayModal() {
   const open = useSelector((state) => state.modal.pay);
   const user = useSelector((state) => state.user.data);
 
+  const navigate = useNavigate();
   const products = useSelector((state) => state.products.addCart);
 
   const handleClose = () => {
@@ -120,6 +122,10 @@ export default function PayModal() {
     );
   };
 
+  const handleEditAddress = () => {
+    navigate("/profile");
+  };
+
   const sumPrice = () => _.sumBy(products, (e) => e.price * e.prdCount);
 
   return (
@@ -165,13 +171,23 @@ export default function PayModal() {
                 Áp dụng
               </Button>
             </Box>
-            <TextField
-              defaultValue={user.address}
-              fullWidth
-              disabled
-              label="Địa chỉ"
-              margin="normal"
-            />
+            <Box display="flex" flexDirection={"row"} gap={2}>
+              <TextField
+                defaultValue={user.address}
+                fullWidth
+                disabled
+                label="Địa chỉ"
+                margin="normal"
+              />
+              <Button
+                // variant="outlined"
+                size="small"
+                sx={{ width: "30%" }}
+                onClick={handleEditAddress}
+              >
+                Chỉnh sửa
+              </Button>
+            </Box>
           </Box>
           <Box
             display={"flex"}

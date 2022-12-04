@@ -1,8 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import banner from "../../access/imgs/banner.jpg";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   return (
     <Box>
       {/* banner */}
@@ -60,7 +62,12 @@ const HomePage = () => {
             quốc tế quen thuộc đến món ăn địa phương và thức ăn đường phố phổ
             biến, Circle K luôn mang đến cho bạn sự hài lòng như mong muốn.
           </Typography>
-          <Button variant={"contained"}>Xem tất cả</Button>
+          <Button
+            variant={"contained"}
+            onClick={() => navigate("thuc-an-thuc-uong/thuc-an")}
+          >
+            Xem tất cả
+          </Button>
         </Box>
         <Box
           sx={{
@@ -78,7 +85,11 @@ const HomePage = () => {
             quốc tế quen thuộc đến món ăn địa phương và thức ăn đường phố phổ
             biến, Circle K luôn mang đến cho bạn sự hài lòng như mong muốn.
           </Typography>
-          <Button variant={"contained"} color={"warning"}>
+          <Button
+            variant={"contained"}
+            color={"warning"}
+            onClick={() => navigate("thuc-an-thuc-uong/thuc-uong")}
+          >
             Xem tất cả
           </Button>
         </Box>
