@@ -5,8 +5,6 @@ import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import productApi from "../../api/productApi";
 import { useDispatch } from "react-redux";
 import { setProducts } from "../../redux/reducers/productReducer";
-import InforUserPay from "../../components/modals/InforUserPay";
-import PayModal from "../../components/modals/PayModal";
 
 const img1 =
   "https://www.circlek.com.vn/wp-content/uploads/2021/10/Thức-ăn_468wx468h.jpg";
@@ -178,8 +176,6 @@ const FoodDrink = () => {
           </Box>
         </Box>
       )}
-      <InforUserPay />
-      <PayModal />
     </Box>
   );
 };

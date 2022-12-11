@@ -13,6 +13,7 @@ import { useState } from "react";
 import Noti from "../../components/common/Toast";
 import { setAddCart } from "../../redux/reducers/productReducer";
 import { useNavigate } from "react-router-dom";
+import orderApi from "../../api/orderApi";
 
 const style = {
   position: "absolute",
@@ -38,10 +39,23 @@ export default function PayModal() {
     dispatch(setPayModal(false));
   };
 
-  const handlePay = () => {
-    dispatch(setPayModal(false));
-    Noti("success", "Đặt hàng thành công");
-    dispatch(setAddCart([]));
+  const handlePay = async () => {
+    try {
+      await orderApi.createOrder({
+        cart: {
+          products,
+          voucher: "",
+        },
+        UID: user.id,
+        nameOfUser: user.fullname,
+        phone: user.phone,
+        address: user.address,
+      });
+
+      dispatch(setPayModal(false));
+      Noti("success", "Đặt hàng thành công");
+      dispatch(setAddCart([]));
+    } catch (error) {}
   };
 
   const CartItem = ({ product }) => {

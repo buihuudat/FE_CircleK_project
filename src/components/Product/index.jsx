@@ -34,7 +34,7 @@ export default function Product({ product }) {
     <Card
       sx={{
         maxWidth: 200,
-        height: 400,
+        height: "100%",
         display: "flex",
         flexDirection: "column",
       }}
@@ -42,7 +42,7 @@ export default function Product({ product }) {
       <CardActionArea onClick={handleClick}>
         <CardMedia
           component="img"
-          height="200px"
+          height="150px"
           image={product.image}
           alt={product.name}
         />

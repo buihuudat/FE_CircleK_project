@@ -53,6 +53,7 @@ export default function SideBar({ drawerWidth }) {
       icon: <AttachMoneyIcon />,
       text: "Thống kê chi tiêu",
       path: "thong-ke-chi-tieu",
+      herf: "https://spending-app.vercel.app/",
       display: 1,
     },
     {
@@ -107,7 +108,12 @@ export default function SideBar({ drawerWidth }) {
               <MenuItem
                 key={i}
                 sx={path === e.path && { bgcolor: "rgba(0,0,0,.05)" }}
-                onClick={() => navigate(e.path)}
+                onClick={() => {
+                  i === 2
+                    ? (window.location.href =
+                        "https://spending-app.vercel.app/")
+                    : navigate(e.path);
+                }}
               >
                 <ListItemIcon>{e.icon}</ListItemIcon>
                 <ListItemText>{e.text}</ListItemText>
