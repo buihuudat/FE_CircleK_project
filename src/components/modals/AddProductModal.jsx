@@ -3,7 +3,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { setAddProductModal } from "../../redux/reducers/modalReducer";
+import {
+  setAddProducerModal,
+  setAddProductModal,
+} from "../../redux/reducers/modalReducer";
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import moment from "moment";
@@ -161,6 +164,10 @@ export default function AddProductModal() {
     }
   };
 
+  const handleAddProducers = () => {
+    dispatch(setAddProducerModal(true));
+  };
+
   return (
     <div>
       <Modal
@@ -232,22 +239,34 @@ export default function AddProductModal() {
                 ))}
               </Select>
             </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="demo-simple-select-label">
-                Nhà sản xuất
-              </InputLabel>
-              <Select
-                value={value}
-                label="Nhà sản xuất"
-                onChange={handleChange}
+            <Box
+              display={"flex"}
+              alignItems="center"
+              justifyContent={"space-between"}
+            >
+              <FormControl sx={{ width: "80%" }} margin="normal">
+                <InputLabel id="demo-simple-select-label">
+                  Nhà sản xuất
+                </InputLabel>
+                <Select
+                  value={value}
+                  label="Nhà sản xuất"
+                  onChange={handleChange}
+                >
+                  {producers.map((producer, i) => (
+                    <MenuItem key={producer.id} value={producer.id}>
+                      {producer.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Button
+                sx={{ width: "15%", fontWeight: "600" }}
+                onClick={handleAddProducers}
               >
-                {producers.map((producer, i) => (
-                  <MenuItem key={producer.id} value={producer.id}>
-                    {producer.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+                ADD
+              </Button>
+            </Box>
             <TextField
               label="Số lượng"
               margin="normal"

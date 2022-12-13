@@ -30,7 +30,6 @@ import {
 } from "../../redux/reducers/modalReducer";
 import AddIcon from "@mui/icons-material/Add";
 import Noti from "../../components/common/Toast";
-import AddProducerModal from "../../components/modals/AddProducerModal";
 import producerApi from "../../api/producerApi";
 import EditProducerModal from "../../components/modals/EditProducerModal";
 
@@ -448,7 +447,6 @@ export default function Producer() {
           <AddIcon />
         </Fab>
       </Box>
-      <AddProducerModal />
       <EditProducerModal />
     </Box>
   );

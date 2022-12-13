@@ -1,5 +1,5 @@
 import { Box, Toolbar } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Outlet } from "react-router-dom";
@@ -13,6 +13,7 @@ import InforUserPay from "../modals/InforUserPay";
 import PayModal from "../modals/PayModal";
 import SigninModal from "../modals/SigninModal";
 import SignupModal from "../modals/SignupModal";
+import AddProducerModal from "../modals/AddProducerModal";
 
 const AppLayout = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const AppLayout = () => {
         <SignupModal />
         <InforUserPay />
         <AboutProductModal />
+        <AddProducerModal />
         <PayModal />
       </Box>
       <Footer />
