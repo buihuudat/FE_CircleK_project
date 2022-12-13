@@ -35,8 +35,8 @@ const style = {
 export default function AddProductModal() {
   const [nameErr, setNameErr] = useState("");
   const [descErr, setDesErr] = useState("");
-  const [countErr, setCountErr] = useState(0);
-  const [priceErr, setPriceErr] = useState(0);
+  const [countErr, setCountErr] = useState("");
+  const [priceErr, setPriceErr] = useState("");
   const [hsxErr, setHsxErr] = useState("");
   const [hsdErr, setHsdErr] = useState("");
   const [loading, setLoading] = useState(false);
@@ -122,12 +122,12 @@ export default function AddProductModal() {
       setNameErr("Hãy nhập thông tin sản phẩm");
       err = true;
     }
-    if (data.count === 0) {
-      setCountErr("Bạn chưa nhập số lượng");
+    if (Number(data.count) === 0) {
+      setCountErr("Số lượng không hợp lệ");
       err = true;
     }
-    if (data.price === 0) {
-      setPriceErr("Bạn chưa nhập giá tiền");
+    if (Number(data.price) === 0) {
+      setPriceErr("Giá tiền không hợp lệ");
       err = true;
     }
     if (data.image === "") {
@@ -154,6 +154,7 @@ export default function AddProductModal() {
       Noti("success", "Đã thêm thành công ", product.name);
       setLoading(false);
       dispatch(setAddProductModal(false));
+      window.reload();
     } catch (error) {
       setLoading(false);
       Noti("error", error.data);
@@ -196,6 +197,7 @@ export default function AddProductModal() {
               error={nameErr !== ""}
               helperText={nameErr}
               fullWidth
+              required
             />
             <TextField
               label="Thông tin sản phẩm"
@@ -204,6 +206,7 @@ export default function AddProductModal() {
               error={descErr !== ""}
               helperText={descErr}
               fullWidth
+              required
             />
             <FormControl sx={{ width: "45%", mr: "5%" }} margin="normal">
               <InputLabel id="demo-simple-select-label">Kiểu</InputLabel>
@@ -250,8 +253,9 @@ export default function AddProductModal() {
               margin="normal"
               name="count"
               type="number"
-              error={countErr !== 0}
-              helperText={countErr !== 0}
+              required
+              error={countErr !== ""}
+              helperText={countErr}
               sx={{ width: "45%", mr: "5%" }}
             />
             <TextField
@@ -259,8 +263,9 @@ export default function AddProductModal() {
               margin="normal"
               name="price"
               type={"number"}
-              error={priceErr !== 0}
-              helperText={priceErr !== 0}
+              required
+              error={priceErr !== ""}
+              helperText={priceErr}
               sx={{ width: "45%", ml: "5%" }}
             />
             <TextField

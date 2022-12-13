@@ -9,25 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
-import productApi from "../../../api/productApi";
-import Noti from "../../../components/common/Toast";
 import { setEditProductModal } from "../../../redux/reducers/modalReducer";
 
-const ProductCard = ({ product, admin = 1 }) => {
-  const [loading, setLoading] = useState(false);
+const ProductCard = ({ product, admin = 1, handleDelete, loading }) => {
   const dispatch = useDispatch();
-
-  const handleDelete = async () => {
-    try {
-      await productApi.delete(product.id);
-      setLoading(true);
-      Noti("success", "Đã xóa thành công");
-    } catch (error) {
-      Noti("error", "Xóa thất bại", error.data);
-    }
-  };
 
   return (
     <Box>
@@ -69,16 +55,15 @@ const ProductCard = ({ product, admin = 1 }) => {
               marginTop: "auto",
             }}
           >
-            <LoadingButton
+            <Button
               variant="contained"
               color="error"
               size="small"
-              onClick={handleDelete}
-              loading={loading}
+              onClick={() => handleDelete(product.id)}
               sx={{ width: "30%" }}
             >
               Delete
-            </LoadingButton>
+            </Button>
             <Button
               variant="contained"
               color="primary"
