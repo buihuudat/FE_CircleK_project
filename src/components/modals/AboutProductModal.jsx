@@ -26,14 +26,12 @@ const style = {
   borderRadius: "20px",
 };
 
-export default function AboutPrroductModal() {
+export default function AboutProductModal() {
   const [heart, setHeart] = useState(0);
 
   const showProduct = useSelector((state) => state.modal.showProductModal);
   const cart = useSelector((state) => state.products.addCart);
   const open = showProduct.status;
-  const { product = [] } = showProduct.data;
-  console.log(product);
 
   const dispatch = useDispatch();
   const handleClose = () => {
@@ -45,7 +43,7 @@ export default function AboutPrroductModal() {
       setAddCart([
         ...cart,
         {
-          ...product,
+          ...showProduct.data,
           prdCount: 1,
         },
       ])
@@ -65,8 +63,8 @@ export default function AboutPrroductModal() {
         <Box sx={style}>
           <Box display={"flex"} flexDirection="row" gap={5}>
             <img
-              src={product.image}
-              alt={product.name}
+              src={showProduct.data.image}
+              alt={showProduct.data.name}
               style={{ width: "400px", height: "400px" }}
             />
             <Box
@@ -78,11 +76,11 @@ export default function AboutPrroductModal() {
               gap={5}
             >
               <Typography variant="h3" fontWeight={500}>
-                {product.name}
+                {showProduct.data.name}
               </Typography>
-              <Typography>{product.description}</Typography>
+              <Typography>{showProduct.data.description}</Typography>
               <Typography variant="h5" color={"orange"}>
-                {currentFormat(product.price)}
+                {currentFormat(showProduct.data.price)}
               </Typography>
               <Button variant="contained" onClick={handleAddProduct}>
                 Thêm vào giỏ hàng <AddShoppingCartIcon />

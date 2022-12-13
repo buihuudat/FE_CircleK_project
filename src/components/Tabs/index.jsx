@@ -5,7 +5,6 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Product from "../Product";
 import { productType } from "../../access/dataType/TypeProducts";
-import AboutPrroductModal from "../modals/AboutProductModal";
 import _ from "lodash";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -93,7 +92,6 @@ export default function Tabsbar({ header, products }) {
               </Box>
             ))}
       </TabPanel>
-      <AboutPrroductModal />
     </Box>
   );
 }

@@ -7,6 +7,7 @@ import productApi from "../../api/productApi";
 import { setProducts } from "../../redux/reducers/productReducer";
 import Navbar from "../common/Navbar";
 import Footer from "../Footer";
+import AboutProductModal from "../modals/AboutProductModal";
 import CartModal from "../modals/CartModal";
 import InforUserPay from "../modals/InforUserPay";
 import PayModal from "../modals/PayModal";
@@ -33,8 +34,8 @@ const AppLayout = () => {
         <CartModal />
         <SigninModal />
         <SignupModal />
-
         <InforUserPay />
+        <AboutProductModal />
         <PayModal />
       </Box>
       <Footer />
