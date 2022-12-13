@@ -18,6 +18,9 @@ import {
   setCartModal,
   setSigninModal,
 } from "../../../redux/reducers/modalReducer";
+import SearchItem from "./SearchItem";
+import { useState } from "react";
+
 const dataNav = [
   {
     icon: <HomeIcon sx={{ width: "30px", height: "30px" }} />,
@@ -84,12 +87,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Navbar() {
+  const [productsFT, setProductsFT] = useState(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const user = useSelector((s) => s.user.data);
   const cart = useSelector((state) => state.products.addCart).length;
+  const products = useSelector((state) => state.products.data);
 
   const cartHandleClick = () => {
     dispatch(setCartModal(true));
@@ -98,6 +103,14 @@ function Navbar() {
   const userHandleClick = () => {
     const token = localStorage.getItem("token");
     token ? navigate("/profile") : dispatch(setSigninModal(true));
+  };
+
+  const handleSeach = (e) => {
+    e.target.value.length === 0
+      ? setProductsFT([])
+      : setProductsFT(
+          products.filter((u) => u.name.toLowerCase().includes(e.target.value))
+        );
   };
 
   return (
@@ -162,15 +175,19 @@ function Navbar() {
                 <Typography fontSize={".8rem"}>{e.text}</Typography>
               </Box>
             ))}
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
+            <Box>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  onChange={handleSeach}
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </Search>
+              {productsFT?.length > 0 && <SearchItem products={productsFT} />}
+            </Box>
             <IconButton sx={{ ml: 2, mr: 2 }} onClick={cartHandleClick}>
               {cart > 0 ? (
                 <Badge badgeContent={cart} color={"primary"}>

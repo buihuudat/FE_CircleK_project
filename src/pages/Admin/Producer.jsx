@@ -27,7 +27,6 @@ import { useDispatch } from "react-redux";
 import {
   setAddProducerModal,
   setEditProducerModal,
-  setUserAdminModal,
 } from "../../redux/reducers/modalReducer";
 import AddIcon from "@mui/icons-material/Add";
 import Noti from "../../components/common/Toast";

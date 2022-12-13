@@ -3,6 +3,7 @@ import queryString from "query-string";
 
 const baseURL = "http://localhost:5000/api/";
 export const URL_SV2 = "http://localhost:9000/api/v1";
+export const dnrUri = "https://api.cloudinary.com/v1_1/ddtagvynp/upload";
 
 export const axiosClient = axios.create({
   baseURL,
@@ -30,6 +31,5 @@ axiosClient.interceptors.response.use(
     throw err.response;
   }
 );
-
 
 export default axiosClient;

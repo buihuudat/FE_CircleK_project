@@ -17,6 +17,8 @@ import { LoadingButton } from "@mui/lab";
 import Noti from "../common/Toast";
 import productApi from "../../api/productApi";
 import { productType } from "../../access/dataType/TypeProducts";
+import { dnrUri } from "../../api/axiosClient";
+import { imageUpload } from "../common/uploadImage";
 
 const style = {
   position: "absolute",
@@ -37,7 +39,6 @@ export default function AddProductModal() {
   const [priceErr, setPriceErr] = useState(0);
   const [hsxErr, setHsxErr] = useState("");
   const [hsdErr, setHsdErr] = useState("");
-  const [typeErr, setTypeErr] = useState("");
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [image, setImage] = useState("");
@@ -81,8 +82,9 @@ export default function AddProductModal() {
     setLoading(false);
   };
 
-  const handleSelectImage = (e) => {
-    setImage(e.base64);
+  const handleSelectImage = async (e) => {
+    const img = await imageUpload(e.base64);
+    setImage(img);
   };
 
   const handleChange = (event) => {

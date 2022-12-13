@@ -1,4 +1,4 @@
-import axiosClient, { URL_SV2 } from "./axiosClient";
+import { URL_SV2 } from "./axiosClient";
 import axios from "axios";
 
 const orderApi = {

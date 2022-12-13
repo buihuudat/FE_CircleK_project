@@ -9,7 +9,8 @@ import _ from "lodash";
 
 const Product = ({ products, phone, orders }) => {
   const [status, setStatus] = useState({});
-  const sumPrice = () => _.sumBy(products.products, (e) => Number(e.price));
+  const sumPrice = () =>
+    _.sumBy(products.products, (e) => Number(e.price) * Number(e.prdCount));
 
   const statusProduct = [
     {
@@ -44,41 +45,43 @@ const Product = ({ products, phone, orders }) => {
 
   return (
     <Box>
-      <Paper xs={{ width: "max-content" }}>
-        {products.products.map((data, i) => (
-          <Box
-            key={i}
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            gap={2}
-            p={3}
-            m={1}
-            width={300}
-          >
-            <Avatar
-              src={data.image}
-              alt={data.name}
-              sx={{ width: 60, height: 60 }}
-            />
-            <Box display="flex" flexDirection={"column"}>
-              <Typography variant="h6" fontWeight={500}>
-                {data.name}
-              </Typography>
-              <Box
-                display="flex"
-                flexDirection="row"
-                justifyContent={"space-between"}
-                gap={4}
-              >
-                <Typography variant="h6">{data.count}</Typography>
-                <Typography variant="h6" color="orange" align="right">
-                  {currentFormat(data.price)}
+      <Paper sx={{ width: "max-content" }}>
+        <Box sx={{ height: 250, overflow: "auto" }}>
+          {products.products.map((data, i) => (
+            <Box
+              key={i}
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              gap={2}
+              p={3}
+              m={1}
+              width={300}
+            >
+              <Avatar
+                src={data.image}
+                alt={data.name}
+                sx={{ width: 60, height: 60 }}
+              />
+              <Box display="flex" flexDirection={"column"}>
+                <Typography variant="h6" fontWeight={500}>
+                  {data.name}
                 </Typography>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent={"space-between"}
+                  gap={4}
+                >
+                  <Typography variant="h6">{data.prdCount}</Typography>
+                  <Typography variant="h6" color="orange" align="right">
+                    {currentFormat(data.price)}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
-          </Box>
-        ))}
+          ))}
+        </Box>
 
         <Box display="flex" flexDirection={"column"} p={3}>
           <Box
@@ -97,14 +100,20 @@ const Product = ({ products, phone, orders }) => {
         </Box>
 
         <Box display="flex" flexDirection={"column"} gap={2}>
-          <Button
-            href={`tel:${phone}`}
-            variant="outlined"
-            fullWidth
-            color={status?.Noti ?? "warning"}
-          >
-            {status?.text ?? "Chờ xác nhận"}
-          </Button>
+          {products.status === "danggiao" ? (
+            <Button disabled variant="outlined" fullWidth>
+              Đang giao hàng
+            </Button>
+          ) : (
+            <Button
+              href={`tel:${phone}`}
+              variant="outlined"
+              fullWidth
+              color={status?.Noti ?? "warning"}
+            >
+              {status?.text ?? "Chờ xác nhận"}
+            </Button>
+          )}
           <Button
             href={`tel:${phone}`}
             variant="outlined"

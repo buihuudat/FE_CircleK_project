@@ -33,6 +33,7 @@ export default function AboutPrroductModal() {
   const cart = useSelector((state) => state.products.addCart);
   const open = showProduct.status;
   const { product = [] } = showProduct.data;
+  console.log(product);
 
   const dispatch = useDispatch();
   const handleClose = () => {

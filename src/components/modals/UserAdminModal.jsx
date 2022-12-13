@@ -16,8 +16,10 @@ import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import userApi from "../../api/userApi";
 import Noti from "../common/Toast";
-import axiosClient from "../../api/axiosClient";
+import axiosClient, { dnrUri } from "../../api/axiosClient";
 import FileBase64 from "react-file-base64";
+import axios from "axios";
+import { imageUpload } from "../common/uploadImage";
 
 const style = {
   position: "absolute",
@@ -53,8 +55,9 @@ export default function UserAdminModal() {
     setDisable(true);
   };
 
-  const handleChangeAvatar = (e) => {
-    setImage(e.base64);
+  const handleChangeAvatar = async (e) => {
+    const img = await imageUpload(e.base64);
+    setImage(img);
   };
 
   const handleChange = (e) => {

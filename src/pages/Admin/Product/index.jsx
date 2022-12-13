@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import productApi from "../../../api/productApi";
-import { setProducts } from "../../../redux/reducers/productReducer";
 import { Box, Typography } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";

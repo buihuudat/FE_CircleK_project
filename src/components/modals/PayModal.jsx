@@ -14,6 +14,7 @@ import Noti from "../../components/common/Toast";
 import { setAddCart } from "../../redux/reducers/productReducer";
 import { useNavigate } from "react-router-dom";
 import orderApi from "../../api/orderApi";
+import { LoadingButton } from "@mui/lab";
 
 const style = {
   position: "absolute",
@@ -28,6 +29,7 @@ const style = {
 };
 
 export default function PayModal() {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const open = useSelector((state) => state.modal.pay);
   const user = useSelector((state) => state.user.data);
@@ -40,6 +42,7 @@ export default function PayModal() {
   };
 
   const handlePay = async () => {
+    setLoading(true);
     try {
       await orderApi.createOrder({
         cart: {
@@ -52,10 +55,14 @@ export default function PayModal() {
         address: user.address,
       });
 
+      setLoading(false);
       dispatch(setPayModal(false));
       Noti("success", "Đặt hàng thành công");
       dispatch(setAddCart([]));
-    } catch (error) {}
+    } catch (error) {
+      Noti("error", error.data);
+      setLoading(false);
+    }
   };
 
   const CartItem = ({ product }) => {
@@ -233,14 +240,15 @@ export default function PayModal() {
               Mua thêm
             </Button>
             {products.length > 0 && (
-              <Button
+              <LoadingButton
                 color="success"
                 variant="contained"
                 fullWidth
                 onClick={handlePay}
+                loading={loading}
               >
                 Thanh toán
-              </Button>
+              </LoadingButton>
             )}
           </Box>
         </Box>
