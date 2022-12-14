@@ -80,7 +80,7 @@ export default function Tabsbar({ header, products }) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={indexTab}>
-        <Box display={"flex"} flexWrap="wrap" gap={3}>
+        <Box display={"flex"} flexWrap="wrap" gap={3} justifyContent="center">
           {type === productType[header].data[0].type
             ? products.map((product, i) => (
                 <Box key={i}>

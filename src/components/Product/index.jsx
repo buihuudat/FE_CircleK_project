@@ -16,7 +16,7 @@ export default function Product({ product }) {
   const cart = useSelector((state) => state.products.addCart);
 
   const handleClick = () => {
-    dispatch(setShowProdctModal({ status: true, data: { product } }));
+    dispatch(setShowProdctModal({ status: true, data: product }));
   };
   const handleAddProduct = () => {
     dispatch(
@@ -39,7 +39,15 @@ export default function Product({ product }) {
         flexDirection: "column",
       }}
     >
-      <CardActionArea onClick={handleClick}>
+      <CardActionArea
+        onClick={handleClick}
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
         <CardMedia
           component="img"
           height="150px"
