@@ -2,7 +2,6 @@ import React from "react";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
 import orderApi from "../../../api/orderApi";
-import { useState } from "react";
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoadingR } from "../../../redux/reducers/loadingReducer";
@@ -37,7 +36,7 @@ const Order = () => {
     dispatch(setLoadingR(false));
     dispatch(setOrderReducer(products));
     getOrders();
-  }, [dispatch, products]);
+  }, [dispatch]);
 
   return (
     products && (

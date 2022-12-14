@@ -212,7 +212,7 @@ export default function User() {
       }
     };
     getUsers();
-  }, [dispatch]);
+  }, [dispatch, btnLoading]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -268,20 +268,8 @@ export default function User() {
     try {
       await userApi.delete(id);
       await userApi.getAll();
-      const user = await userApi.getAll();
       Noti("success", "Đã xóa thành công");
       setBtnLoading(false);
-      rows.push(
-        createData(
-          user.id,
-          user.name,
-          user.username,
-          user.phone,
-          user.permission,
-          user.avatar,
-          user.password
-        )
-      );
     } catch (error) {
       Noti("error", "Xóa thất bại", error.data);
       setBtnLoading(false);

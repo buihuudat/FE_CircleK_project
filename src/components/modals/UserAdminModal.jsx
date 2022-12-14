@@ -16,9 +16,8 @@ import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import userApi from "../../api/userApi";
 import Noti from "../common/Toast";
-import axiosClient, { dnrUri } from "../../api/axiosClient";
+import axiosClient from "../../api/axiosClient";
 import FileBase64 from "react-file-base64";
-import axios from "axios";
 import { imageUpload } from "../common/uploadImage";
 
 const style = {
@@ -77,7 +76,6 @@ export default function UserAdminModal() {
       phone: Number(formData.get("phone")) || data.phone,
       address: formData.get("address") || data.address,
     };
-    console.log(getData);
     let err = false;
     if (getData.name === "") {
       setNameErrText("Bạn chưa nhập tên");

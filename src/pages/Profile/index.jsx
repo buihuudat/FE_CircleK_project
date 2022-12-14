@@ -15,7 +15,7 @@ const Profile = () => {
   const [confirmPasswordErrText, setConfirmPasswordErrText] = useState("");
   const [addressErrText, setAddressErrText] = useState("");
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
 
   const user = useSelector((state) => state.user.data);
   const dispatch = useDispatch();
@@ -36,9 +36,9 @@ const Profile = () => {
           : formData.get("password"),
       confirmPassword: formData.get("confirmPassword"),
       phone: Number(formData.get("phone")),
-      permission: 1,
+      permission: user.permission,
       address: formData.get("address"),
-      avatar: image,
+      avatar: image || user.image,
     };
 
     let err = false;
