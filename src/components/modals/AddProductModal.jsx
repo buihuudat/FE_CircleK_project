@@ -79,7 +79,7 @@ export default function AddProductModal() {
       setProducers(producers);
     };
     getProducrs();
-  }, [dispatch]);
+  }, []);
 
   const handleClose = () => {
     dispatch(setAddProductModal(false));
@@ -155,10 +155,10 @@ export default function AddProductModal() {
 
     try {
       const product = await productApi.create(data);
+      await productApi.getAllProducts();
       Noti("success", "Đã thêm thành công ", product.name);
       setLoading(false);
       dispatch(setAddProductModal(false));
-      window.reload();
     } catch (error) {
       setLoading(false);
       Noti("error", error.data);

@@ -80,17 +80,19 @@ export default function Tabsbar({ header, products }) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={indexTab}>
-        {type === productType[header].data[0].type
-          ? products.map((product, i) => (
-              <Box key={i}>
-                <Product product={product} />
-              </Box>
-            ))
-          : getProduct(type).map((product, i) => (
-              <Box key={i}>
-                <Product product={product} />
-              </Box>
-            ))}
+        <Box display={"flex"} flexWrap="wrap" gap={3}>
+          {type === productType[header].data[0].type
+            ? products.map((product, i) => (
+                <Box key={i}>
+                  <Product product={product} />
+                </Box>
+              ))
+            : getProduct(type).map((product, i) => (
+                <Box key={i}>
+                  <Product product={product} />
+                </Box>
+              ))}
+        </Box>
       </TabPanel>
     </Box>
   );
