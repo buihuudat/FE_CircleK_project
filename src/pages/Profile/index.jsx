@@ -110,7 +110,7 @@ const Profile = () => {
           }}
         >
           <Avatar
-            src={user.avatar}
+            src={user.avatar || image}
             alt={user.name}
             sx={{ width: "100px", height: "100px", m: "0 auto" }}
           />

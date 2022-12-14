@@ -127,7 +127,7 @@ export default function UserAdminModal() {
       >
         <Box sx={style}>
           <Avatar
-            src={data.avatar}
+            src={data.avatar || image}
             alt={data.name}
             sx={{
               width: "100px",

@@ -49,14 +49,22 @@ const Product = () => {
           Chưa có sản phẩm...
         </Typography>
       )}
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          admin={user.permission}
-          handleDelete={(id) => handleDelete(id)}
-        />
-      ))}
+      <Box
+        display={"flex"}
+        flexDirection="row"
+        flexWrap={"wrap"}
+        gap={2}
+        justifyContent="center"
+      >
+        {products.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            admin={user.permission}
+            handleDelete={(id) => handleDelete(id)}
+          />
+        ))}
+      </Box>
       <Fab
         onClick={() => dispatch(setAddProductModal(true))}
         color="primary"

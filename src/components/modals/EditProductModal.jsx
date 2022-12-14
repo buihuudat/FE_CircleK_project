@@ -21,6 +21,7 @@ import { LoadingButton } from "@mui/lab";
 import Noti from "../common/Toast";
 import productApi from "../../api/productApi";
 import { productType } from "../../access/dataType/TypeProducts";
+import { imageUpload } from "../common/uploadImage";
 
 const style = {
   position: "absolute",
@@ -37,8 +38,8 @@ const style = {
 export default function EditProductModal() {
   const [nameErr, setNameErr] = useState("");
   const [descErr, setDesErr] = useState("");
-  const [countErr, setCountErr] = useState(0);
-  const [priceErr, setPriceErr] = useState(0);
+  const [countErr, setCountErr] = useState("");
+  const [priceErr, setPriceErr] = useState("");
   const [hsxErr, setHsxErr] = useState("");
   const [hsdErr, setHsdErr] = useState("");
   const [typeErr, setTypeErr] = useState("");
@@ -91,12 +92,12 @@ export default function EditProductModal() {
     setDesErr("");
     setHsdErr("");
     setImage("");
-    setCountErr(0);
-    setPriceErr(0);
+    setCountErr("");
+    setPriceErr("");
   };
 
   const handleSelectImage = (e) => {
-    setImage(e.base64);
+    setImage(imageUpload(e.base64));
   };
 
   const handleChange = (event) => {
@@ -118,13 +119,15 @@ export default function EditProductModal() {
       name: formData.get("name"),
       description: formData.get("description"),
       producerId: value,
-      image,
+      image: productData.image || image,
       count: formData.get("count"),
       price: formData.get("price"),
       type,
       hsx: formData.get("hsx"),
       hsd: formData.get("hsd"),
     };
+
+    console.log(data);
     let err = false;
     if (data.name === "") {
       setNameErr("Bạn chưa nhập tên");
@@ -160,14 +163,14 @@ export default function EditProductModal() {
     setDesErr("");
     setHsdErr("");
     setImage("");
-    setCountErr(0);
-    setPriceErr(0);
+    setCountErr("");
+    setPriceErr("");
 
     setLoading(true);
 
     try {
-      const product = await productApi.create(data);
-      Noti("success", "Đã thêm thành công ", product.name);
+      // const product = await productApi.create(data);
+      // Noti("success", "Đã thêm thành công ", product.name);
       setLoading(false);
       dispatch(setAddProductModal(false));
     } catch (error) {
@@ -269,7 +272,7 @@ export default function EditProductModal() {
               name="count"
               type="number"
               error={countErr !== 0}
-              helperText={countErr !== 0}
+              helperText={countErr !== ""}
               defaultValue={productData.count}
               sx={{ width: "45%", mr: "5%" }}
             />
@@ -278,7 +281,7 @@ export default function EditProductModal() {
               margin="normal"
               name="price"
               type={"number"}
-              error={priceErr !== 0}
+              error={priceErr !== ""}
               defaultValue={productData.price}
               helperText={priceErr}
               sx={{ width: "45%", ml: "5%" }}
@@ -311,7 +314,7 @@ export default function EditProductModal() {
                 type={"submit"}
                 loading={loading}
               >
-                Thêm
+                Cập nhật
               </LoadingButton>
               <Button
                 sx={{ mt: 2 }}

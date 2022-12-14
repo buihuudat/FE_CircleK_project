@@ -27,11 +27,21 @@ const ProductCard = ({ product, admin = 1, handleDelete, loading }) => {
         <CardMedia
           component="img"
           height="140"
+          width={"auto"}
           image={product.image}
           alt={product.name}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="subtitle1"
+            fontWeight={600}
+            component="div"
+            sx={{
+              height: 58,
+              overflowWrap: "break-word",
+            }}
+          >
             {product.name}
           </Typography>
           <Typography
