@@ -33,7 +33,7 @@ export default function Product({ product }) {
   return (
     <Card
       sx={{
-        maxWidth: 200,
+        width: 200,
         height: "100%",
         display: "flex",
         flexDirection: "column",

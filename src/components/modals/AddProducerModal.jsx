@@ -10,6 +10,7 @@ import { LoadingButton } from "@mui/lab";
 import producerApi from "../../api/producerApi";
 import Noti from "../common/Toast";
 import { setAllProducers } from "../../redux/reducers/producerReducer";
+import { setLoadingR } from "../../redux/reducers/loadingReducer";
 
 const style = {
   position: "absolute",
@@ -69,7 +70,6 @@ export default function AddProducerModal() {
     setAddressErr("");
     setLoading(true);
 
-    console.log(data);
     try {
       await producerApi.create(data);
       const producers = await producerApi.getAll();
@@ -77,6 +77,7 @@ export default function AddProducerModal() {
       setLoading(false);
       dispatch(setAllProducers(producers));
       dispatch(setAddProducerModal(false));
+      dispatch(setLoadingR(false));
     } catch (error) {
       Noti("error", error.data);
       setLoading(false);

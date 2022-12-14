@@ -22,6 +22,7 @@ import productApi from "../../api/productApi";
 import { productType } from "../../access/dataType/TypeProducts";
 import { dnrUri } from "../../api/axiosClient";
 import { imageUpload } from "../common/uploadImage";
+import { setLoadingR } from "../../redux/reducers/loadingReducer";
 
 const style = {
   position: "absolute",
@@ -78,7 +79,7 @@ export default function AddProductModal() {
       setProducers(producers);
     };
     getProducrs();
-  }, []);
+  }, [dispatch]);
 
   const handleClose = () => {
     dispatch(setAddProductModal(false));
@@ -165,6 +166,7 @@ export default function AddProductModal() {
   };
 
   const handleAddProducers = () => {
+    dispatch(setLoadingR(true));
     dispatch(setAddProducerModal(true));
   };
 
