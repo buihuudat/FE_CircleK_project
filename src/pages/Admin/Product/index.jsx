@@ -42,6 +42,8 @@ const Product = () => {
     }
   };
 
+  const handleAddProduct = (data) => {};
+
   return (
     <Box p={3} display="flex" flexDirection={"row"} flexWrap="wrap" gap={2}>
       {products.length === 0 && (
@@ -62,7 +64,7 @@ const Product = () => {
         color="primary"
         aria-label="add"
         sx={{
-          position: "absolute",
+          position: "fixed",
           right: 0,
           bottom: 0,
           m: 5,
@@ -70,7 +72,7 @@ const Product = () => {
       >
         <AddIcon />
       </Fab>
-      <AddProductModal />
+      <AddProductModal handleAddProduct={(data) => handleAddProduct(data)} />
       <EditProductModal />
     </Box>
   );
