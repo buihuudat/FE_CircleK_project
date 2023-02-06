@@ -5,23 +5,23 @@ import LineChart from "./Charts/LineChart";
 const headerAdmin = [
   {
     title: "Users",
-    data: 1213,
+    data: 12,
   },
   {
     title: "Products",
-    data: 1213,
+    data: 38,
   },
   {
     title: "Producers",
-    data: 1213,
+    data: 23,
   },
   {
     title: "Orders",
-    data: 1213,
+    data: 45,
   },
   {
     title: "New Order",
-    data: 1213,
+    data: 4,
   },
 ];
 

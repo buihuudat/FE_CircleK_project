@@ -5,6 +5,7 @@ import orderReducer from "./reducers/orderReducer";
 import producerReducer from "./reducers/producerReducer";
 import productReducer from "./reducers/productReducer";
 import userReducer from "./reducers/userReducer";
+import voucherReducer from "./reducers/voucherReducer";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     products: productReducer,
     producer: producerReducer,
     order: orderReducer,
+    voucher: voucherReducer,
   },
 });
 

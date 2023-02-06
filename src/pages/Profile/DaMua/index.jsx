@@ -41,7 +41,7 @@ const Product = ({ products, phone, orders }) => {
         setStatus(statusProduct[i]);
       }
     });
-  }, [products]);
+  }, [products, statusProduct]);
 
   return (
     <Box>
@@ -106,10 +106,10 @@ const Product = ({ products, phone, orders }) => {
             </Button>
           ) : (
             <Button
-              href={`tel:${phone}`}
               variant="outlined"
               fullWidth
               color={status?.Noti ?? "warning"}
+              disableTouchRipple
             >
               {status?.text ?? "Chờ xác nhận"}
             </Button>

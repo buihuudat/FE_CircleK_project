@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
 import orderApi from "../../../api/orderApi";
@@ -10,9 +10,10 @@ import Product from "./Product";
 
 const Order = () => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const products = useSelector((state) => state.order.data);
-
+  console.log(products);
   useEffect(() => {
     dispatch(setLoadingR(true));
     const getOrders = async () => {
@@ -36,13 +37,18 @@ const Order = () => {
     dispatch(setLoadingR(false));
     dispatch(setOrderReducer(products));
     getOrders();
-  }, [dispatch]);
+  }, [dispatch, loading]);
 
   return (
     products && (
       <Box display="flex" flexDirection={"row"} gap={2} p={3} flexWrap="wrap">
         {products?.map((product, i) => (
-          <Product products={product} key={i} />
+          <Product
+            products={product}
+            key={i}
+            loading={loading}
+            setLoading={setLoading}
+          />
         ))}
       </Box>
     )

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { setCartModal, setPayModal } from "../../redux/reducers/modalReducer";
+import { setPayModal } from "../../redux/reducers/modalReducer";
 import { Button, IconButton, Paper, TextField } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -15,6 +15,7 @@ import { setAddCart } from "../../redux/reducers/productReducer";
 import { useNavigate } from "react-router-dom";
 import orderApi from "../../api/orderApi";
 import { LoadingButton } from "@mui/lab";
+import voucherApi from "../../api/voucher";
 
 const style = {
   position: "absolute",
@@ -33,6 +34,10 @@ export default function PayModal() {
   const dispatch = useDispatch();
   const open = useSelector((state) => state.modal.pay);
   const user = useSelector((state) => state.user.data);
+  const [addressErrText, setAddressErrText] = useState(null);
+  const [voucher, setVoucher] = useState("");
+  const [sales, setSales] = useState(0);
+  const [voucherErrText, setVoucherErrText] = useState("");
 
   const navigate = useNavigate();
   const products = useSelector((state) => state.products.addCart);
@@ -41,8 +46,30 @@ export default function PayModal() {
     dispatch(setPayModal(false));
   };
 
+  const handleAddVoucher = async () => {
+    if (voucher === "") {
+      setVoucherErrText("Bạn chưa nhập voucher");
+      return;
+    }
+    setVoucherErrText("");
+    setLoading(true);
+    try {
+      const { data } = await voucherApi.get({ voucher });
+      setSales(data.sales);
+      setLoading(false);
+    } catch (e) {
+      Noti("error", "Voucher không hợp lệ");
+      setLoading(false);
+    }
+  };
+
   const handlePay = async () => {
     setLoading(true);
+    if (!user.address) {
+      setAddressErrText("Vui lòng thêm địa chỉ nhận hàng");
+      setLoading(false);
+      return;
+    }
     try {
       await orderApi.createOrder({
         cart: {
@@ -145,6 +172,8 @@ export default function PayModal() {
 
   const handleEditAddress = () => {
     navigate("/profile");
+    dispatch(setPayModal(false));
+    setLoading(false);
   };
 
   const sumPrice = () => _.sumBy(products, (e) => e.price * e.prdCount);
@@ -187,15 +216,33 @@ export default function PayModal() {
               justifyContent="space-between"
               gap={4}
             >
-              <TextField label="Nhập mã giảm giá" fullWidth />
-              <Button variant="contained" fullWidth>
+              <TextField
+                onChange={(e) => setVoucher(e.target.value)}
+                label="Nhập mã giảm giá"
+                fullWidth
+                error={voucherErrText !== ""}
+                helperText={voucherErrText}
+              />
+              <LoadingButton
+                loading={loading}
+                variant="contained"
+                fullWidth
+                onClick={handleAddVoucher}
+              >
                 Áp dụng
-              </Button>
+              </LoadingButton>
             </Box>
+            {sales > 0 && (
+              <Box>
+                <Typography color={"orange"}>Bạn được giảm {sales}%</Typography>
+              </Box>
+            )}
             <Box display="flex" flexDirection={"row"} gap={2}>
               <TextField
                 defaultValue={user.address}
                 fullWidth
+                error={addressErrText}
+                helperText={addressErrText}
                 disabled
                 label="Địa chỉ"
                 margin="normal"
@@ -221,7 +268,7 @@ export default function PayModal() {
               Tổng thanh toán
             </Typography>
             <Typography variant="h4" color="orange">
-              {currentFormat(sumPrice())}
+              {currentFormat(sumPrice() - (sumPrice() * sales) / 100)}
             </Typography>
           </Box>
           <Box

@@ -22,6 +22,7 @@ import Producer from "./pages/Admin/Producer";
 import Orders from "./pages/Admin/Orders";
 import Drink from "./pages/FoodAndDrink/Drink";
 import Food from "./pages/FoodAndDrink/Food";
+import Voucher from "./pages/Admin/Voucher";
 
 const App = () => {
   const theme = createTheme({
@@ -55,6 +56,7 @@ const App = () => {
                 <Route path="products" element={<Product />} />
                 <Route path="producers" element={<Producer />} />
                 <Route path="orders" element={<Orders />} />
+                <Route path="vouchers" element={<Voucher />} />
               </Route>
             </Route>
           </Route>

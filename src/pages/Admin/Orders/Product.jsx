@@ -30,8 +30,7 @@ const statusProduct = [
   },
 ];
 
-const Product = ({ products }) => {
-  const [loading, setLoading] = useState(false);
+const Product = ({ products, loading, setLoading }) => {
   const sumPrice = () =>
     _.sumBy(products.products, (e) => Number(e.price) * Number(e.prdCount));
 

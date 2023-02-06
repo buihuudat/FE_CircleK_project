@@ -21,7 +21,7 @@ import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantity
 import PeopleIcon from "@mui/icons-material/People";
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import InventoryIcon from "@mui/icons-material/Inventory";
-
+import LabelIcon from "@mui/icons-material/Label";
 export default function SideBar({ drawerWidth }) {
   const user = useSelector((s) => s.user.data);
   const navigate = useNavigate();
@@ -81,9 +81,15 @@ export default function SideBar({ drawerWidth }) {
       display: user.permission === 1 ? false : true,
     },
     {
-      icon: <InventoryIcon />,
+      icon: <LabelIcon />,
       text: "Orders",
       path: "admin/orders",
+      display: user.permission === 1 ? false : true,
+    },
+    {
+      icon: <InventoryIcon />,
+      text: "Voucher",
+      path: "admin/vouchers",
       display: user.permission === 1 ? false : true,
     },
   ];
