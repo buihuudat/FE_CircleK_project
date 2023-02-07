@@ -197,7 +197,6 @@ export default function User() {
   const [loading, setLoading] = React.useState(false);
   const [btnLoading, setBtnLoading] = React.useState(false);
   const [idSelected, setIdSelected] = React.useState("");
-  const [users, setUsers] = React.useState([]);
 
   const dispatch = useDispatch();
 

@@ -32,6 +32,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Noti from "../../components/common/Toast";
 import producerApi from "../../api/producerApi";
 import EditProducerModal from "../../components/modals/EditProducerModal";
+import AddProducerModal from "../../components/modals/AddProducerModal";
 
 function createData(id, name, phone, address) {
   return {
@@ -447,6 +448,7 @@ export default function Producer() {
           <AddIcon />
         </Fab>
       </Box>
+      <AddProducerModal />
       <EditProducerModal />
     </Box>
   );

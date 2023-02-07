@@ -66,6 +66,7 @@ const Voucher = () => {
           </Button>
         </Box>
       )}
+      <Button onClick={handleAddVoucher}>Thêm voucher</Button>
       <AddVoucherModal loading={loading} setLoading={setLoading} />
     </div>
   );

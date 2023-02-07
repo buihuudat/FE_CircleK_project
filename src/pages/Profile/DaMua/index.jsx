@@ -6,9 +6,11 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { currentFormat } from "../../../components/common/FormatCurrency";
 import _ from "lodash";
+import Noti from "../../../components/common/Toast";
 
 const Product = ({ products, phone, orders }) => {
   const [status, setStatus] = useState({});
+  const [loading, setLoading] = useState(false);
   const sumPrice = () =>
     _.sumBy(products.products, (e) => Number(e.price) * Number(e.prdCount));
 
@@ -41,7 +43,22 @@ const Product = ({ products, phone, orders }) => {
         setStatus(statusProduct[i]);
       }
     });
-  }, [products, statusProduct]);
+  }, [products, statusProduct, loading]);
+  console.log(orders);
+  const handleDone = async (e) => {
+    setLoading(true);
+    try {
+      // await orderApi.updateOrder({
+      //   id: orders._id,
+      //   cartId: orders.cart._id,
+      //   status: "hoantat",
+      // });
+      Noti("success", "Đã xác nhận đơn hàng");
+      setLoading(false);
+    } catch (error) {
+      Noti("error", error.message);
+    }
+  };
 
   return (
     <Box>
@@ -101,9 +118,19 @@ const Product = ({ products, phone, orders }) => {
 
         <Box display="flex" flexDirection={"column"} gap={2}>
           {products.status === "danggiao" ? (
-            <Button disabled variant="outlined" fullWidth>
-              Đang giao hàng
-            </Button>
+            <Box>
+              <Button disabled variant="outlined" fullWidth>
+                Đang giao hàng
+              </Button>
+              <Button
+                onClick={handleDone}
+                variant="contained"
+                fullWidth
+                sx={{ mt: 1 }}
+              >
+                Đã nhận được hàng
+              </Button>
+            </Box>
           ) : (
             <Button
               variant="outlined"
